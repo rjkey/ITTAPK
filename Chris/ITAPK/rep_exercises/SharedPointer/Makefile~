@@ -1,0 +1,25 @@
+# Defines which compiler to use.
+CC=g++
+
+# The list of flags to pass to the compilation command.
+CXXFLAGS=
+
+ODIR=bin
+
+DEPS = SharedPtr.h
+SOURCES = main.cpp
+
+OBJECTS=$(SOURCES: .cpp=.o)
+
+EXECUTABLE = main
+
+$(ODIR)/%.o: %.cpp $(DEPS)
+	$(CC) -c -o $@ $< $(CPPFLAGS)
+
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) -o $@ $^ $(CPPFLAGS)
+
+
+.PHONY: clean
+clean:
+	rm -f $(ODIR)/*.o $(EXECUTABLE)
