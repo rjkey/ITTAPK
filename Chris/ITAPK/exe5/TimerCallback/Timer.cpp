@@ -35,7 +35,7 @@ Timer::~Timer()
     {
       v.second(any);
     }
-    
+    std::cout<< std::endl;
   }
 
 

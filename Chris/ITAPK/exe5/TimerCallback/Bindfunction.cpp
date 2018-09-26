@@ -21,19 +21,17 @@ void freeFunction( const std::shared_ptr<Event>& event )
    // Protecting stdio since its not thread safe
   std::lock_guard<std::mutex> lock(stdioProt );
 
+  
    if(typeid(Event)== typeid(*event))
    {
       std::cout << "Normal event detected "<< std::endl;  
+      std::cout<< *event ;
    }
-   else 
-   if (typeid(EventOther)== typeid(event)) 
+   else if (typeid(EventOther)== typeid(event)) 
    {
-     std::cout<< "Other event detected" << std::endl;
-   }
-   
-    
-
-  
+      std::cout<< "Other event detected" << std::endl;
+      std::cout<< *event;
+   }  
 }
 
 
@@ -43,9 +41,23 @@ void withAnExtra(const std::shared_ptr<Event>& event, const std::string text)
   std::lock_guard<std::mutex> lock(stdioProt );
 
   /* MISSING EVENT PRINT OUT */
-  std::cout << "message :" << text << std::endl;
-
+   if(typeid(Event)== typeid(*event))
+   {
+      std::cout << "Normal event detected "<< text << std::endl;  
+      std::cout<< *event ;
+   }
+   else if (typeid(EventOther)== typeid(event)) 
+   {
+      std::cout<< "Other event detected" << text << std::endl;
+      std::cout<< *event;
+   }  
 }
+
+struct Funktor {
+    void operator()(const std::shared_ptr<Event> & event) {
+        std::cout << " using functor: "<< std::endl << *event; 
+    }
+} funky;
 
 
 class ReferenceObj
@@ -60,7 +72,16 @@ public:
     // Protecting stdio since its not thread safe
     std::lock_guard<std::mutex> lock(stdioProt );
 
-    /* MISSING EVENT PRINT OUT */
+    if(typeid(Event)== typeid(*event))
+   {
+      std::cout << "Normal event detected in refObj"<< std::endl;  
+      std::cout<< *event ;
+   }
+   else if (typeid(EventOther)== typeid(event)) 
+   {
+      std::cout<< "Other event detected in refObj" << std::endl;
+      std::cout<< *event;
+   }  
     
     ++called_;
   }
@@ -78,12 +99,13 @@ private:
 
 int main()
 {
+  ReferenceObj refObj;
   // Try to make several timers with different callbacks
   Timer t1( 4 );
   t1.attach( freeFunction );
-
-
-
+  t1.attach( funky ); 
+  t1.attach( std::bind(withAnExtra, std::placeholders::_1, "with some extra info"));
+  t1.attach( std::bind(&ReferenceObj::call, &refObj, std::placeholders::_1));
   // The threads run naturally in the background (no clean up has been added for the threads)
 
    
@@ -93,6 +115,7 @@ int main()
   {
     std::chrono::milliseconds sleepFor(1000);
     std::this_thread::sleep_for(sleepFor);
+    //std::cout<< refObj.gotCalled()<< std::endl;
   }
    
 
