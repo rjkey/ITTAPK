@@ -1,7 +1,9 @@
 #define exec name
 EXEC=prog
 #define compiler flags
-CXXFLAGS =-I.
+CXXFLAGS =-I. -lpthread
+#define linker flags 
+LXXFLAGS =-lpthread
 #define default compiler HOST
 CXX=g++
 #define default build dir
@@ -28,19 +30,19 @@ all:${EXEC}
 #define EXEC specficic
 ${EXEC}: ${DEPS} ${OBJECTS}
 	@echo [Linking] $@
-	@${CXX} -o ${EXEC} ${OBJECTS}
+	@${CXX} -o ${EXEC} ${OBJECTS} ${LXXFLAGS}
 	@echo Done.
 #create directe link for o=cpp
 ${BUILD_DIR}/%.o : %.cpp
 	@echo [Compiling] $^
 	@${CXX} -c $^ -o $@ ${CXXFLAGS}
-	
 ${BUILD_DIR}/%.d : %.cpp
 	@echo [listing dependencys] $@
 	@${CXX} -MT${@:.d=.o} -MM ${CXXFLAGS} $^ > $@
 #utils
 clean:
 	@rm -rf build
+	@rm -rf bin
 	@echo Done.
 help:
 	@echo Targets: all, clean, help

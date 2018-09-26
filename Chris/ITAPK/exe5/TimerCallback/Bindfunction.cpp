@@ -21,7 +21,18 @@ void freeFunction( const std::shared_ptr<Event>& event )
    // Protecting stdio since its not thread safe
   std::lock_guard<std::mutex> lock(stdioProt );
 
-    /* MISSING EVENT PRINT OUT */
+   if(typeid(Event)== typeid(*event))
+   {
+      std::cout << "Normal event detected "<< std::endl;  
+   }
+   else 
+   if (typeid(EventOther)== typeid(event)) 
+   {
+     std::cout<< "Other event detected" << std::endl;
+   }
+   
+    
+
   
 }
 
@@ -32,6 +43,7 @@ void withAnExtra(const std::shared_ptr<Event>& event, const std::string text)
   std::lock_guard<std::mutex> lock(stdioProt );
 
   /* MISSING EVENT PRINT OUT */
+  std::cout << "message :" << text << std::endl;
 
 }
 

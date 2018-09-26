@@ -20,7 +20,7 @@ Timer::~Timer()
   {
     callbacks_[counter_] = cb;
     int id = counter_;
-    counter++;
+    counter_++;
     return id;
   }
 
