@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++17   CMakeFiles/a.out.dir/Bindfunction.cpp.o CMakeFiles/a.out.dir/Events.cpp.o CMakeFiles/a.out.dir/Timer.cpp.o  -o a.out -lpthread 

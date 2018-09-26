@@ -1,0 +1,3 @@
+/mnt/hgfs/ITTAPK/Richard/Exercise 5/TimerCallback/CMakeFiles/rebuild_cache.dir
+/mnt/hgfs/ITTAPK/Richard/Exercise 5/TimerCallback/CMakeFiles/a.out.dir
+/mnt/hgfs/ITTAPK/Richard/Exercise 5/TimerCallback/CMakeFiles/edit_cache.dir

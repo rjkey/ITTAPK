@@ -15,16 +15,21 @@ Timer::~Timer()
 	delete thread_;
 }
 
-void notifyAll(const std::shared_ptr<Event>& any){
-  //do stuff
+void Timer::notifyAll(const std::shared_ptr<Event>& any){
+  for(auto e : callbacks_){
+    e.second(any);
+  }
 }
 
-int attach(std::function<void (const std::shared_ptr<Event>&)> cb){
-
+int Timer::attach(std::function<void (const std::shared_ptr<Event>&)> cb){
+  callbacks_[counter_] = cb;
+  int counter = counter_;
+  counter_++;
+  return counter;
 }
 
-void detach(int cbId){
-
+void Timer::detach(int cbId){
+  callbacks_.erase(cbId);
 }
 
 int Timer::timerThreadFunction()

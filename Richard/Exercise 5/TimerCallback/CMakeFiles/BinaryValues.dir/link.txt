@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++17   CMakeFiles/BinaryValues.dir/Bindfunction.cpp.o  -o BinaryValues 

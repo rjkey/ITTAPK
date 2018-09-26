@@ -21,17 +21,21 @@ void freeFunction( const std::shared_ptr<Event>& event )
    // Protecting stdio since its not thread safe
   std::lock_guard<std::mutex> lock(stdioProt );
 
-    /* MISSING EVENT PRINT OUT */
-  
+    if(typeid(*event) != typeid(Event)){
+      
+      std::cout << "A very special event is detected!" << std::endl;
+    } 
+    else{
+      std::cout << "This is the standard event..." << std::endl;
+    }
 }
-
 
 void withAnExtra(const std::shared_ptr<Event>& event, const std::string text)
 {
    // Protecting stdio since its not thread safe
   std::lock_guard<std::mutex> lock(stdioProt );
 
-  /* MISSING EVENT PRINT OUT */
+  std::cout << text << std::endl;
 
 }
 
@@ -47,7 +51,7 @@ public:
   {
     // Protecting stdio since its not thread safe
     std::lock_guard<std::mutex> lock(stdioProt );
-
+    std::cout << "Call in Reference obj" << std::endl;
     /* MISSING EVENT PRINT OUT */
     
     ++called_;
@@ -62,15 +66,24 @@ private:
    int   called_;
 };
 
-
+class MyFunctor
+{
+    public:
+    void operator()(const std::shared_ptr<Event> & event){
+        std::cout << "My functor just got used as callback!!" << std::endl;
+    }
+};
 
 int main()
 {
+  MyFunctor func;
+  ReferenceObj refObj;
   // Try to make several timers with different callbacks
   Timer t1( 4 );
-  t1.attach( freeFunction );
-
-
+  t1.attach(freeFunction);
+  t1.attach(func); //using MyFunctor as callback function
+  t1.attach(std::bind(&withAnExtra, std::placeholders::_1, "Placeholder"));
+  t1.attach(std::bind(&ReferenceObj::call, refObj, std::placeholders::_1));
 
   // The threads run naturally in the background (no clean up has been added for the threads)
 

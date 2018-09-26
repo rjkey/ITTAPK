@@ -22,7 +22,10 @@ private:
 private:
   int           eventTimer_;
   std::thread*	thread_;
-  bool          terminator_;	
+  bool          terminator_;
+  std::map<int, std::function<void (const std::shared_ptr<Event> &)>> callbacks_;
+  std::function<void (const std::shared_ptr<Event> &)> test_;
+  int counter_;
 };
 
 

@@ -1,0 +1,54 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/hgfs/ITTAPK/Richard/Exercise 5/TimerCallback/Bindfunction.cpp
+string
+-
+iostream
+-
+mutex
+-
+functional
+-
+Events.hpp
+/mnt/hgfs/ITTAPK/Richard/Exercise 5/TimerCallback/Events.hpp
+Timer.hpp
+/mnt/hgfs/ITTAPK/Richard/Exercise 5/TimerCallback/Timer.hpp
+
+/mnt/hgfs/ITTAPK/Richard/Exercise 5/TimerCallback/Events.cpp
+ostream
+-
+ctime
+-
+Events.hpp
+/mnt/hgfs/ITTAPK/Richard/Exercise 5/TimerCallback/Events.hpp
+
+/mnt/hgfs/ITTAPK/Richard/Exercise 5/TimerCallback/Events.hpp
+chrono
+-
+
+/mnt/hgfs/ITTAPK/Richard/Exercise 5/TimerCallback/Timer.cpp
+iostream
+-
+Events.hpp
+/mnt/hgfs/ITTAPK/Richard/Exercise 5/TimerCallback/Events.hpp
+Timer.hpp
+/mnt/hgfs/ITTAPK/Richard/Exercise 5/TimerCallback/Timer.hpp
+
+/mnt/hgfs/ITTAPK/Richard/Exercise 5/TimerCallback/Timer.hpp
+string
+-
+map
+-
+thread
+-
+functional
+-
+chrono
+-
+
