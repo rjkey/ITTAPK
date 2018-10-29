@@ -44,19 +44,24 @@ typedef Algo SmartAlgo;
 typedef Algo CoolAlgo;
 typedef Algo FantasticAlgo;
 
+void do_thread_work()
+{
+  
+}
+
 int main(int argc, char* argv[])
 {
-  int i = 0;
-  int n = 10000000; // Change at your leasure
-    
-  std::vector<int> data;
-  data.reserve(n);
-  generate_n( back_inserter( data ), n, [&i](){return i++;}  );
-  random_shuffle( data.begin (), data.end () );
+	std::cout << "Hello" << std::endl;
+	int i = 0;
+	int n = 10000000; // Change at your leasure
+	std::vector<int> data;
+	data.reserve(n);
+	generate_n(back_inserter(data), n, [&i]() {return i++; });
+	random_shuffle(data.begin(), data.end());
 
-  /* Insert code here ... */
-  std::thread th1();
+	/* Insert code here ... */	
+  std::thread th1(do_thread_work);
 
-  
-  return 0;
+	std::cout << "Goodbye" << std::endl;
+	return 0;
 }
