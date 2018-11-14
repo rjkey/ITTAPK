@@ -1,6 +1,7 @@
-#include<string.h>
+#include<string>
 #include<iostream>
 
+using namespace std;
 
 
 class Arena
@@ -17,7 +18,7 @@ public:
 
 Arena::Arena(string name, int combatmod){
 
-    areaName_ = new name;
+    areaName_ = name;
     combatmodifier_ = combatmod ; 
 }
 
@@ -32,5 +33,5 @@ int Arena::getCombatModifier(){
 
 void Arena::show(){
 
-    std::cout << "you have entered " << areaName_ << (combatmodifier_<0? "lowering " : "adding ") << "your attack with "<< combatmodifier_ << std::endl;
+    std::cout << "you have entered " << areaName_ << (combatmodifier_<0? " lowering " : " adding ") << "your attack with "<< combatmodifier_ << std::endl;
 }
