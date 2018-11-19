@@ -1,5 +1,5 @@
 #define exec name
-EXEC=prog
+EXEC=prog.exe
 #define compiler flags
 CXXFLAGS =-I. -lpthread
 #define linker flags 
@@ -17,7 +17,7 @@ BUILD_DIR=build/target
 BIN_DIR=bin/target
 endif
 #define project src NOTE the addprefix to define build path
-SOURCES= $(addprefix ${BUILD_DIR}/,$(wildcard *.cpp))  
+SOURCES= $(addprefix ${BUILD_DIR}/,$(wildcard Main.cpp))  
 #convert %.cpp files to %.o files.
 OBJECTS = ${SOURCES:.cpp=.o}
 #add dependency files (*.h,*.hpp) 
