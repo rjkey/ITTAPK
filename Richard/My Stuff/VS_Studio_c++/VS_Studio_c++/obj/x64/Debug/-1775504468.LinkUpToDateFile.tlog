@@ -1,0 +1,1 @@
+g++ -o "/home/stud/projects/VS_Studio_c++/bin/x64/Debug/VS_Studio_c++.out" -Wl,--no-undefined -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack /home/stud/projects/VS_Studio_c++/obj/x64/Debug/main.o

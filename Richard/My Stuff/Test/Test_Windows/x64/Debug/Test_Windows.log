@@ -1,0 +1,2 @@
+﻿  Test_Windows.cpp
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\test_windows\test_windows.cpp(8): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?

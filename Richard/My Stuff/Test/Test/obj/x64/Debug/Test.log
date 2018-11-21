@@ -1,0 +1,8 @@
+﻿  Validating sources
+  Copying sources remotely to '192.168.238.130'
+  Validating architecture
+  Starting remote build
+  Compiling sources:
+  main.cpp
+  Linking objects
+  Test.vcxproj -> C:\Users\rjkey\Google Drive\Aarhus University\ITTAPK\ITTAPK\Richard\My Stuff\Test\Test\bin\x64\Debug\Test.out

@@ -1,0 +1,44 @@
+﻿  pch.cpp
+  BLAA.cpp
+  class template variant is only available with C++17 or later.
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(14): error C2039: 'variant': is not a member of 'std'
+  c:\program files (x86)\microsoft visual studio\2017\enterprise\vc\tools\msvc\14.16.27023\include\iostream(14): note: see declaration of 'std'
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(14): error C2065: 'variant': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(14): error C2062: type 'int' unexpected
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(15): error C2065: 'v': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(16): error C2065: 'v': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(17): error C2065: 'w': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(17): error C2065: 'v': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(18): error C2065: 'w': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(18): error C2065: 'v': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(19): error C2065: 'w': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(19): error C2065: 'v': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(25): error C2065: 'w': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(27): error C2039: 'bad_variant_access': is not a member of 'std'
+  c:\program files (x86)\microsoft visual studio\2017\enterprise\vc\tools\msvc\14.16.27023\include\iostream(14): note: see declaration of 'std'
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(27): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(27): error C2143: syntax error: missing ',' before '&'
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(29): error C2039: 'variant': is not a member of 'std'
+  c:\program files (x86)\microsoft visual studio\2017\enterprise\vc\tools\msvc\14.16.27023\include\iostream(14): note: see declaration of 'std'
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(29): error C2065: 'variant': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(29): error C2275: 'std::string': illegal use of this type as an expression
+  c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(29): note: see declaration of 'std::string'
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(29): error C3861: 'x': identifier not found
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(30): error C2065: 'x': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(32): error C2039: 'variant': is not a member of 'std'
+  c:\program files (x86)\microsoft visual studio\2017\enterprise\vc\tools\msvc\14.16.27023\include\iostream(14): note: see declaration of 'std'
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(32): error C2065: 'variant': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(32): error C2275: 'std::string': illegal use of this type as an expression
+  c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(32): note: see declaration of 'std::string'
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(32): error C2062: type 'bool' unexpected
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(33): error C2039: 'holds_alternative': is not a member of 'std'
+  c:\program files (x86)\microsoft visual studio\2017\enterprise\vc\tools\msvc\14.16.27023\include\iostream(14): note: see declaration of 'std'
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(33): error C2065: 'holds_alternative': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(33): error C2062: type 'bool' unexpected
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(34): error C2065: 'y': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(35): error C2039: 'holds_alternative': is not a member of 'std'
+  c:\program files (x86)\microsoft visual studio\2017\enterprise\vc\tools\msvc\14.16.27023\include\iostream(14): note: see declaration of 'std'
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(35): error C2065: 'holds_alternative': undeclared identifier
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(35): error C2275: 'std::string': illegal use of this type as an expression
+  c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(35): note: see declaration of 'std::string'
+c:\users\rjkey\google drive\aarhus university\ittapk\ittapk\richard\my stuff\test\blaa\blaa.cpp(35): error C2065: 'y': undeclared identifier

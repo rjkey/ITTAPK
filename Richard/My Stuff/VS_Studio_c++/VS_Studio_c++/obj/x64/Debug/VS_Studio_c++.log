@@ -1,0 +1,14 @@
+﻿  Validating sources
+  Copying sources remotely to '192.168.238.130'
+  Validating architecture
+  Starting remote build
+  Compiling sources:
+  main.cpp
+C:\Users\rjkey\Google Drive\Aarhus University\ITTAPK\ITTAPK\Richard\My Stuff\VS_Studio_c++\VS_Studio_c++\main.cpp(6,6): warning : unused variable ‘u’ [-Wunused-variable]
+C:\Users\rjkey\Google Drive\Aarhus University\ITTAPK\ITTAPK\Richard\My Stuff\VS_Studio_c++\VS_Studio_c++\main.cpp(6,6): warning :   int u = 8;
+C:\Users\rjkey\Google Drive\Aarhus University\ITTAPK\ITTAPK\Richard\My Stuff\VS_Studio_c++\VS_Studio_c++\main.cpp(6,6): warning :       ^
+C:\Users\rjkey\Google Drive\Aarhus University\ITTAPK\ITTAPK\Richard\My Stuff\VS_Studio_c++\VS_Studio_c++\main.cpp(7,6): warning : unused variable ‘t’ [-Wunused-variable]
+C:\Users\rjkey\Google Drive\Aarhus University\ITTAPK\ITTAPK\Richard\My Stuff\VS_Studio_c++\VS_Studio_c++\main.cpp(7,6): warning :   int t = 8;
+C:\Users\rjkey\Google Drive\Aarhus University\ITTAPK\ITTAPK\Richard\My Stuff\VS_Studio_c++\VS_Studio_c++\main.cpp(7,6): warning :       ^
+  Linking objects
+  VS_Studio_c++.vcxproj -> C:\Users\rjkey\Google Drive\Aarhus University\ITTAPK\ITTAPK\Richard\My Stuff\VS_Studio_c++\VS_Studio_c++\bin\x64\Debug\VS_Studio_c++.out
