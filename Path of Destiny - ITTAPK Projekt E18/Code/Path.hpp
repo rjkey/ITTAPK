@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include "Location.hpp"
 
 using namespace std; 
 
@@ -15,7 +16,7 @@ enum Directions
 };
 
 
-class Path
+class Path : public Location
 {
 private:
     string AreaName_; 

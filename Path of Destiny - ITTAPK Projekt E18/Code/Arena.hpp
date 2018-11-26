@@ -1,10 +1,11 @@
 #include<string>
 #include<iostream>
+#include"Location.hpp"
 
 using namespace std;
 
 
-class Arena
+class Arena : public Location
 {
 private:
     string areaName_;
