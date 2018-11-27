@@ -4,6 +4,8 @@
 
 using namespace std; 
 
+#ifndef Path
+
 static string DirectionsStrings[] = {"continue ahead or turn left", "continue ahead or turn right", "turn left or right", "continue ahead or turn left or right"};
 
 
@@ -16,7 +18,7 @@ enum Directions
 };
 
 
-class Path : public Location
+class Path : virtual public Location
 {
 private:
     string AreaName_; 
@@ -47,3 +49,6 @@ void Path::show()
     cout<< "entered " << AreaName_ << " you can "<<  DirectionsStrings[DirectionsToGo_]<< endl;
 
 }
+
+
+#endif

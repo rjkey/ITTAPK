@@ -4,8 +4,9 @@
 
 using namespace std;
 
+#ifndef Arena
 
-class Arena : public Location
+class Arena : virtual public Location
 {
 private:
     string areaName_;
@@ -36,3 +37,6 @@ void Arena::show(){
 
     std::cout << "you have entered " << areaName_ << (combatmodifier_<0? " lowering " : " adding ") << "your attack with "<< combatmodifier_ << std::endl;
 }
+
+
+#endif
