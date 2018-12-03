@@ -25,8 +25,7 @@ public:
 PathOfDestiny::PathOfDestiny(std::variant<Arena,Path> currentLocation)
  : currentLocation_(currentLocation)
 {
-    currentLocation_ = currentLocation;
-
+    
 }
 
 PathOfDestiny::~PathOfDestiny()
