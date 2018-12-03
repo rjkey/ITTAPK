@@ -1,7 +1,7 @@
 #define exec name
 EXEC=prog.exe
 #define compiler flags
-CXXFLAGS =-I. -lpthread
+CXXFLAGS =-I. -lpthread -std=c++1z
 #define linker flags 
 LXXFLAGS =-lpthread
 #define default compiler HOST
