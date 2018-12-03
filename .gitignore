@@ -33,6 +33,8 @@
 .idea/
 Path of Destiny - ITTAPK Projekt E18/Code/test
 
+.json
+
 #Chris test files
 testMain.cpp
 test.exe
