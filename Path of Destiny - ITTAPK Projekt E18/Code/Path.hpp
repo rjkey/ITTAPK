@@ -28,6 +28,7 @@ private:
 
 public:
     Path(string name, uint directions);
+    Path();
     ~Path();
     void show();
 
@@ -38,6 +39,12 @@ Path::Path(string name, uint directions)
 {
     AreaName_ = name;
     DirectionsToGo_ = directions;
+}
+
+Path::Path()
+{
+    AreaName_ = "unknown";
+    DirectionsToGo_ = NULL;
 }
 
 Path::~Path()

@@ -13,6 +13,7 @@ private:
     int combatmodifier_; 
 public:
     Arena(string name, int combatmod );
+    Arena();
     ~Arena();
     int getCombatModifier();
     void show() const ;
@@ -22,6 +23,12 @@ Arena::Arena(string name, int combatmod){
 
     areaName_ = name;
     combatmodifier_ = combatmod ; 
+}
+
+Arena::Arena(){
+
+    areaName_ = "unknown";
+    combatmodifier_ = 0 ; 
 }
 
 Arena::~Arena(){
