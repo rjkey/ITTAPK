@@ -14,5 +14,5 @@ typedef uint DEF;
 class Gear
 {
     int gear_ = 1;
-}
+};
 
