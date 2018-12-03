@@ -15,7 +15,7 @@ public:
     Arena(string name, int combatmod );
     ~Arena();
     int getCombatModifier();
-    void show();
+    void show() const ;
 };
 
 Arena::Arena(string name, int combatmod){
@@ -33,7 +33,7 @@ int Arena::getCombatModifier(){
     return combatmodifier_; 
 }
 
-void Arena::show(){
+void Arena::show() const{
 
     std::cout << "you have entered " << areaName_ << (combatmodifier_<0? " lowering " : " adding ") << "your attack with "<< combatmodifier_ << std::endl;
 }

@@ -11,7 +11,7 @@ private:
 public:
     Location();
     ~Location();
-    virtual void show();
+    virtual void show() const;
 };
 
 Location::Location()
@@ -23,7 +23,7 @@ Location::~Location()
 {
 }
 
-void Location::show()
+void Location::show() const
 {
 
 }
