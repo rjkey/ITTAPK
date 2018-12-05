@@ -35,14 +35,22 @@ PathOfDestiny::~PathOfDestiny()
 
 void PathOfDestiny::movement(Hero hero, list<std::variant<Arena, Path>> listLocation)
 {
-       
+       // present location 
+
        if (std::holds_alternative<Arena>(currentLocation_)) {
            /* code */
            // Combat call !??! 
            // get a path to move on from - as current location
        }
 
-
+        // show possible directions
+        // await player input 
+        // handle input
+            // if valid 
+            //  get location/arena
+            // if unvalid 
+            //  display it, await new input
+        // change gear??
 
        
 }
