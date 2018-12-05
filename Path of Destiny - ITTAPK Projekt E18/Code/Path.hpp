@@ -1,10 +1,13 @@
+#ifndef PATH_HPP
+#define PATH_HPP
+
 #include <string>
 #include <iostream>
 #include "Location.hpp"
 
 using namespace std; 
 
-#ifndef Path
+
 
 static string DirectionsStrings[] = {"continue ahead or turn left", "continue ahead or turn right", "turn left or right", "continue ahead or turn left or right"};
 
@@ -30,15 +33,17 @@ public:
     Path(string name, uint directions);
     Path();
     ~Path();
+    void setDirectionsToGo(uint directions);
     void show();
 
 
 };
 
 Path::Path(string name, uint directions)
+:AreaName_(name)
 {
-    AreaName_ = name;
-    DirectionsToGo_ = directions;
+    setDirectionsToGo(directions);
+    
 }
 
 Path::Path()
@@ -51,6 +56,20 @@ Path::~Path()
 {
 }
 
+void Path::setDirectionsToGo(uint directions)
+{
+    
+    if (directions<4) {
+        DirectionsToGo_ = directions;
+    }
+    else
+    {
+        DirectionsToGo_ = NULL;
+    }
+    
+    
+}
+
 void Path::show()
 {
     cout<< "entered " << AreaName_ << " you can "<<  DirectionsStrings[DirectionsToGo_]<< endl;
@@ -58,4 +77,4 @@ void Path::show()
 }
 
 
-#endif
+#endif // PATH_HPP
