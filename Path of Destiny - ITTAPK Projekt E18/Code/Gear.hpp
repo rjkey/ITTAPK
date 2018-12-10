@@ -1,39 +1,52 @@
 ﻿#ifndef GEAR_H
 #define GEAR_H
+#define MAX 3
+#include <string>
+#include <array>
+#include "CostumeTypes.hpp"
 
-struct Weapon{};
-struct Armor{};
+std::array<std::string, MAX> list_of_weapons = { "Axe", "Sword", "Mace" };
+std::array<std::string, MAX> list_of_armors = {"Iron armor", "Wooden armor", "Steel armor", };
 
-template<typename T, typename R>
+template<typename T>
 class Gear
 {
+	static_assert(std::is_same<T, ATT>::value || std::is_same<T, DEF>::value, "GEAR: invalid type");
+private:
+	T value_;
+	std::string name_;
+
+	static size_t random_number() {
+		return rand() % (MAX - 1) + 0;
+	}
 public:
-	Gear(T* type, R value)
-	{
-		static_assert(std::is_same<Weapon, T>::value || std::is_same<uint, R>::value, "FAG!");
-		static_assert(std::is_same<Armor, T>::value || std::is_same<uint, R>::value, "FAG!");
-		type_ = type;
+	Gear(T value) {
+		value_ = value;
+		if constexpr (std::is_same_v<T, ATT>)
+		{
+			name_ = list_of_weapons[random_number()];
+		}
+		else if(std::is_same_v<T, DEF>)
+		{
+			name_ = list_of_armors[random_number()];
+		}
+	}
+
+	~Gear() {
+	}
+	void set_value(T value) {
 		value_ = value;
 	}
-
-	~Gear() 
-	{
-		delete type_; 
-	}
-
-	void SetValue(uint value)
-	{
-		value_ = value;
-	}
-
-	R GetValue() const
-	{
+	T get_value() {
 		return value_;
 	}
 
-private:
-	T* type_;
-	R value_ = 10;
+	std::string get_name() const
+	{
+		return name_;
+	}
+	void show() {
+	}
 };
 
 #endif // GEAR_H
