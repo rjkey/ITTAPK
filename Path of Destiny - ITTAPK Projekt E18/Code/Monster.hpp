@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "CostumeTypes.hpp"
+#include "CosTypes.hpp"
 
 using namespace std;
 

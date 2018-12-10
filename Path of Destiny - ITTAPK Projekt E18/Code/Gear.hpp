@@ -3,7 +3,7 @@
 #define MAX 3
 #include <string>
 #include <array>
-#include "CostumeTypes.hpp"
+#include "CosTypes.hpp"
 
 std::array<std::string, MAX> list_of_weapons = { "Axe", "Sword", "Mace" };
 std::array<std::string, MAX> list_of_armors = {"Iron armor", "Wooden armor", "Steel armor", };
