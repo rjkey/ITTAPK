@@ -1,7 +1,9 @@
 #define exec name
-EXEC=prog.exe
+EXEC=prog
 #define compiler flags
-CXXFLAGS =-I. -lpthread -std=c++1z
+#-std=c++1z			Use c++17 compiler
+#-Wall & -Werror	Make warnings into compile errors (unused variable ect..)
+CXXFLAGS =-I. -lpthread -std=c++1z -Wall -Werror
 #define linker flags 
 LXXFLAGS =-lpthread
 #define default compiler HOST
@@ -17,7 +19,7 @@ BUILD_DIR=build/target
 BIN_DIR=bin/target
 endif
 #define project src NOTE the addprefix to define build path
-SOURCES= $(addprefix ${BUILD_DIR}/,$(wildcard Main.cpp))  
+SOURCES= $(addprefix ${BUILD_DIR}/,$(wildcard *.cpp))  
 #convert %.cpp files to %.o files.
 OBJECTS = ${SOURCES:.cpp=.o}
 #add dependency files (*.h,*.hpp) 
