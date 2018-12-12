@@ -231,6 +231,7 @@ auto operator-(HP first, const ATT& second)
 
 
 
+/*
 
 //////////////////// TEMP class for Gear //////////////////////////////
 template <typename T>
@@ -275,10 +276,10 @@ Gear& operator=(Gear&& other) noexcept { // move assignment
     return *this;
 }
 
-/*/ Must be implemented for Hero.Show()
+/* Must be implemented for Hero.Show()
 auto outstream() const { // Ostream operator
   return name_;
-}//*/
+}//*
 
 
 friend std::ostream& operator<<(std::ostream& os, const Gear& G_Obj){ // Ostream overload
@@ -289,6 +290,10 @@ private:
     std::string name_;
     T weapon_amour_;
 };
+
+
+
+*/
 
 
 /*/ Must be implemented for Hero.Show() (to print equipped items)
