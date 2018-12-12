@@ -1,63 +1,26 @@
-#include "Monster.hpp"
-#include "Humanoid.hpp"
+#include "CosTypes.hpp"
 
-template<typename T>
 class Opponent
 {
-
 public:
-	Opponent();
+	
+	virtual ~Opponent();;
 
-	Opponent(T opponent);
+	virtual HP getHealth() = 0;
+	virtual ATT getAttack() = 0;
+	virtual DEF getDefence() = 0;
 
-	~Opponent();
+	virtual void setHealth(HP) = 0;
+	virtual void setAttack(ATT) = 0;
+	virtual void setDefence(DEF) = 0;
 
-	Opponent(const Opponent& other);
-
-	Opponent(Opponent&& other) noexcept;
-
-	Opponent& operator=(const Opponent& other);
-
-	Opponent& operator=(Opponent&& other) noexcept;;
+	virtual void show() = 0;
+	virtual void showStats() = 0;
+	virtual void showInventory() = 0;
 
 private:
-	T opponent_;
+	std::string heroName_;
+	HP health_;
+	ATT attack_;
+	DEF defence_;
 };
-
-template <typename T>
-Opponent<T>::Opponent()
-{
-}
-
-template <typename T>
-Opponent<T>::Opponent(T opponent)
-{
-	opponent_ = opponent;
-}
-
-template <typename T>
-Opponent<T>::~Opponent()
-{
-}
-
-template <typename T>
-Opponent<T>::Opponent(const Opponent& other)
-{
-}
-
-template <typename T>
-Opponent<T>::Opponent(Opponent&& other) noexcept
-{
-}
-
-template <typename T>
-Opponent<T>& Opponent<T>::operator=(const Opponent& other)
-{
-	return {};
-}
-
-template <typename T>
-Opponent<T>& Opponent<T>::operator=(Opponent&& other) noexcept
-{
-	return {};
-}

@@ -1,93 +1,52 @@
-#include <iostream>
-#include <string>
 #include "CosTypes.hpp"
 
-using namespace std;
-
-class Monster
+class Monster : public Opponent
 {
 private:
-    string name_;
-    ATT attack_;
-    DEF defence_;
-    HP health_;
-
 public:
-    Monster(string name, ATT attack, DEF defence, HP health);
-    Monster();
-    ~Monster();
-    string getName();
-    void setName(string name);
-    ATT getAttack();
-    void setAttack(ATT attack);
-    DEF getDefence();
-    void setDefence(DEF defence);
-    HP getHealth();
-    void setHealth(HP health);
-    void show() const ;
+	HP getHealth() override;
+	ATT getAttack() override;
+	DEF getDefence() override;
+	void setHealth(HP) override;
+	void setAttack(ATT) override;
+	void setDefence(DEF) override;
+	void show() override;
+	void showStats() override;
+	void showInventory() override;
 };
 
-Monster::Monster(string name, ATT attack, DEF defence, HP health)
+HP Monster::getHealth()
 {
-    name_ = name;
-    attack_ = attack;
-    defence_ = defence; 
-    health_ = health;
-}
-
-Monster::Monster()
-{
-    name_ = "Unknown";
-    attack_ = 0;
-    defence_ = 0;
-    health_ = 0; 
-}
-
-Monster::~Monster()
-{
-}
-
-string Monster::getName()
-{
-    return name_;
-}
-
-void Monster::setName(string name)
-{
-    name_ = name;
 }
 
 ATT Monster::getAttack()
 {
-    return attack_;
-}
-
-void Monster::setAttack(ATT attack)
-{
-    attack_ = attack; 
 }
 
 DEF Monster::getDefence()
 {
-    return defence_; 
 }
 
-void Monster::setDefence(DEF defence)
+void Monster::setHealth(HP)
 {
-    defence_ = defence;
 }
 
-HP Monster::getHealth()
+void Monster::setAttack(ATT)
 {
-    return health_;
 }
 
-void Monster::setHealth(HP health)
+void Monster::setDefence(DEF)
 {
-    health_ = health;
 }
 
-void Monster::show() const
+void Monster::show()
 {
-    cout << name_<< " health: "<< health_ << " attack: "<< attack_ << " defence: " << defence_ << endl;
+}
+
+void Monster::showStats()
+{
+}
+
+void Monster::showInventory()
+{
 }
