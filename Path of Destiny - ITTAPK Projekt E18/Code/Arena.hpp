@@ -1,49 +1,71 @@
+
+#ifndef ARENA_HPP
+#define ARENA_HPP
+
 #include<string>
 #include<iostream>
-#include"Location.hpp"
+#include"CosTypes.hpp"
 
 using namespace std;
 
-#ifndef Arena
+static string arenaStrings[] = {"foggy swamps", "hills", "forrest clearing", "marketplace"};
 
-class Arena : virtual public Location
+
+
+template<typename T>
+class Arena 
 {
 private:
     string areaName_;
-    int combatmodifier_; 
+    T combatmodifier_; 
 public:
-    Arena(string name, int combatmod );
+    Arena(int name, T combatmod );
     Arena();
     ~Arena();
-    int getCombatModifier();
+    T getCombatModifier();
     void show() const ;
+
+ friend ostream& operator<< (ostream& os, const Arena& arena)
+ {
+     return os << "you have entered " << arena.areaName_ << "affecting your attack with "<< arena.combatmodifier_ << std::endl;  
+     //(arena.combatmodifier_<0? " lowering " : " adding ") << 
+ }
 };
 
-Arena::Arena(string name, int combatmod){
-
-    areaName_ = name;
-    combatmodifier_ = combatmod ; 
+template<typename T>
+Arena<T>::Arena(int name, T combatmod)
+    :areaName_(arenaStrings[name]),combatmodifier_(combatmod)
+{
 }
 
-Arena::Arena(){
-
+template<typename T>
+Arena<T>::Arena()
+{
     areaName_ = "unknown";
-    combatmodifier_ = 0 ; 
+    combatmodifier_ = (ATT) 0 ; 
 }
 
-Arena::~Arena(){
-
-
+template<typename T>
+Arena<T>::~Arena()
+{
 }
 
-int Arena::getCombatModifier(){
+template<typename T>
+T Arena<T>::getCombatModifier()
+{
     return combatmodifier_; 
 }
 
-void Arena::show() const{
+template<typename T>
+void Arena<T>::show() const{
 
-    std::cout << "you have entered " << areaName_ << (combatmodifier_<0? " lowering " : " adding ") << "your attack with "<< combatmodifier_ << std::endl;
+cout << "you have entered " << areaName_ << " affecting your attack with "<< combatmodifier_ << std::endl;  
+     //(arena.combatmodifier_<0? " lowering " : " adding ") << 
 }
 
 
-#endif
+
+
+
+
+#endif //ARENA_HPP
