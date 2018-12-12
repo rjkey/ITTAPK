@@ -5,6 +5,26 @@
 #include <utility>  // for exchange(); -see overloads
 
 
+
+
+//************** INTRO **************//
+// Only subtract ATT from HP (=HP NOT the other way around!)
+// Only subtract ATT from DEF (=DEF NOT the other way around!)
+// DEF can be addet to HP (=HP all combinations)
+// += and -= works on same types (all combinations)
+// Comparing HP and ATT <, > (Only HP and ATT)
+// Comparing HP and HP <, > (all combinations)
+// Comparing ATT and ATT <, > (all combinations)
+// Comparing DEF and DEF <, > (all combinations)
+// Logic operations ==, != (all combinations)
+
+// When working with HP, ATT and DEF
+// Always add HP and DEF =HP, then subtract ATT also =HP
+// When doing calculations between types, a temp type must be made SEE RULE 1 to 4!
+// Ex:(H_tmp = HP1-ATT1) -> (HP1 = H_tmp)
+
+
+
 /////////////////////////////////////////////
 // ***** x= Operator Definition ***** //
 /////////////////////////////////////////////
@@ -62,14 +82,14 @@ struct OutStream
 // ***** SafeType Validation ***** //
 /////////////////////////////////////////////
 
+//
 // Struct for comparing validation (false)
 template <class T, class = void>
 struct HasValidateMethod : std::false_type {};
 
 // struct for comparing validation (true)
 template <class T>
-struct HasValidateMethod<T, std::void_t<decltype(std::declval<T>().validate)> > : std::true_type {
-};
+struct HasValidateMethod<T, std::void_t<decltype(std::declval<T>().validate)> > : std::true_type {};
 
 // What is valid, and what to return if not valied (one pr. type)
 template<typename ST>
@@ -77,11 +97,14 @@ struct HP_Validation
 {
   constexpr uint16_t validate(uint16_t value) const
   {
-    if(value < 0)
+    if(value > 0) {
+      return value;
+    }
+    else{
       return 0;
-    return value;
+    }
   }  
-};
+};//*/
 
 // the validation call
 template<typename ST, typename T>
@@ -92,7 +115,7 @@ T&& validate(const ST& st, T&& t)
   else
     return std::move(t);
 }
-
+//*/
 
 
 
@@ -125,32 +148,66 @@ public:
     value_ = validate(*this, std::move(value));
   }
 
+
+  //////////////////// Logic operations ////////////////////
+  template<class Rhs, std::enable_if_t<!std::is_same<Rhs, SafeType>{},int> =0 >
+  friend bool operator==(Rhs const& ptr, SafeType) {
+    return !*ptr;
+  }
+
+  template<class Rhs, std::enable_if_t<!std::is_same<Rhs, SafeType>{},int> =0 >
+  friend bool operator!=(Rhs const& ptr, SafeType) {
+    return !(ptr==SafeType{});
+  }
+
+  template<class Lhs, std::enable_if_t<!std::is_same<Lhs, SafeType>{},int> =0 >
+  friend bool operator==(SafeType, Lhs const& ptr) {
+    return !*ptr;
+  }
+
+  template<class Lhs, std::enable_if_t<!std::is_same<Lhs, SafeType>{},int> =0 >
+  friend bool operator!=(SafeType, Lhs const& ptr) {
+    return !(SafeType{}==ptr);
+  }
+
+  friend bool operator==(SafeType, SafeType) {
+    return true;
+  }
+
+  friend bool operator!=(SafeType, SafeType) {
+    return false;
+  }//*/
+
+
+
+
+
   //////////////////// Overloads ////////////////////
-// Rule of 5: + Ostream
-~SafeType(){} // Destructor
+  // Rule of 5: + Ostream
+  ~SafeType(){} // Destructor
 
-SafeType(const SafeType& other) { // copy constructor
-  value_ = other.value_;
-}
-/*
-SafeType(SafeType&& other) noexcept // move constructor
-  : value_(std::exchange(other.value_, NULL))
-{}
-*/
-SafeType(SafeType&& other) noexcept // move constructor
-  : value_(std::move(other.value_))
-{}
+  SafeType(const SafeType& other) { // copy constructor
+    value_ = other.value_;
+  }
+  /*
+  SafeType(SafeType&& other) noexcept // move constructor
+    : value_(std::exchange(other.value_, NULL))
+  {}
+  */
+  SafeType(SafeType&& other) noexcept // move constructor
+    : value_(std::move(other.value_))
+  {}
 
-SafeType& operator=(const SafeType& other) { // copy assignment
-      return *this = SafeType(other);
-}
+  SafeType& operator=(const SafeType& other) { // copy assignment
+        return *this = SafeType(other);
+  }
 
-SafeType& operator=(SafeType&& other) noexcept { // move assignment
-    std::swap(value_, other.value_);
-    return *this;
-}//*/
-//////////////////// Overloads end ////////////////////
-  
+  SafeType& operator=(SafeType&& other) noexcept { // move assignment
+      std::swap(value_, other.value_);
+      return *this;
+  }//*/
+  //////////////////// Overloads end ////////////////////
+    
 private:
   T value_;
 };
@@ -185,11 +242,30 @@ auto operator-(SafeType<T, Tag, Operations...> first, const SafeType<T, Tag, Ope
 }
 
 template<typename T, typename Tag, template<typename> typename... Operations>
+auto operator<(SafeType<T, Tag, Operations...> first, const SafeType<T, Tag, Operations...>& second)
+{
+    if( first.get() < second.get() ) {
+      return true;
+    }
+    return false;
+}
+
+template<typename T, typename Tag, template<typename> typename... Operations>
+auto operator>(SafeType<T, Tag, Operations...> first, const SafeType<T, Tag, Operations...>& second)
+{
+    if( first.get() > second.get() ) {
+      return true;
+    }
+    return false;
+}
+
+template<typename T, typename Tag, template<typename> typename... Operations>
 std::ostream& operator<<(std::ostream& os, const SafeType<T, Tag, Operations...>& first)
 {
   os << first.outstream();
   return os;
 }
+
 
 template<typename T, typename Tag, template<typename> typename... Operations>
 std::istream& operator>>(std::istream& is, SafeType<T, Tag, Operations...>& first)
@@ -209,8 +285,8 @@ std::istream& operator>>(std::istream& is, SafeType<T, Tag, Operations...>& firs
 // ***** Define Costume Types ***** //
 /////////////////////////////////////////////
 using HP = SafeType<int16_t, struct HP_tag,     Addition, Subtraction, OutStream>;
-using ATT = SafeType<uint16_t, struct ATT_tag,  Addition, Subtraction, Multiply, OutStream>;
-using DEF = SafeType<uint16_t, struct DEF_tag,  Addition, Subtraction, Multiply, OutStream>;
+using ATT = SafeType<int16_t, struct ATT_tag,  Addition, Subtraction, OutStream>;
+using DEF = SafeType<int16_t, struct DEF_tag,  Addition, Subtraction, OutStream>;
 
 
 
@@ -226,82 +302,58 @@ auto operator-(HP first, const ATT& second)
   return std::move(first);
 }
 
-// ???
-
-
-
-
-/*
-
-//////////////////// TEMP class for Gear //////////////////////////////
-template <typename T>
-class Gear
+// Only subtract ATT from DEF (NOT the other way around!)
+auto operator-(DEF first, const ATT& second)
 {
-public:
-  // Default constructor
-  Gear(){}
-
-  // Constructor
-  Gear (std::string name, T att_def){
-      weapon_amour_ = att_def;
-      name_ = name;
-  }
-
-
-  void printGear(){
-    std::cout << *this << std::endl;
-  }
-
-//////////////////// Overloads ////////////////////
-// Rule of 5: + Ostream
-~Gear(){} // Destructor
-
-Gear(const Gear& other) { // copy constructor
-  name_ = other.name_;
-  weapon_amour_ = other.weapon_amour_;
+  first.set(first.get() - second.get());;
+  return std::move(first);
 }
 
-Gear(Gear&& other) noexcept // move constructor
-  : name_(std::exchange(other.name_, nullptr)),
-    weapon_amour_(std::exchange(other.weapon_amour_, nullptr))
-{}
-
-Gear& operator=(const Gear& other) { // copy assignment
-      return *this = Gear(other);
-}
-
-Gear& operator=(Gear&& other) noexcept { // move assignment
-    std::swap(name_, other.name_);
-    std::swap(weapon_amour_, other.weapon_amour_);
-    return *this;
-}
-
-/* Must be implemented for Hero.Show()
-auto outstream() const { // Ostream operator
-  return name_;
-}//*
-
-
-friend std::ostream& operator<<(std::ostream& os, const Gear& G_Obj){ // Ostream overload
-  return os << G_Obj.name_ << " (" << G_Obj.weapon_amour_ << ")";
-}
-
-private:
-    std::string name_;
-    T weapon_amour_;
-};
-
-
-
-*/
-
-
-/*/ Must be implemented for Hero.Show() (to print equipped items)
-template<typename T>
-std::ostream& operator<<(std::ostream& os, const Gear<T>& G_Obj)
+// DEF can be addet to HP (all combinations)
+auto operator+(HP first, const DEF& second)
 {
-  return os;
-}//*/
+  first.set(first.get() + second.get());;
+  return std::move(first);
+}
+auto operator+(DEF first, const HP& second)
+{
+  first.set(first.get() + second.get());;
+  return std::move(first);
+}
+
+
+// Comparing HP and ATT (all combinations)
+auto operator<(HP first, const ATT& second)
+{
+  if( first.get() < second.get() ){
+    return true;
+  }
+  return false;
+}
+auto operator<(ATT first, const HP& second)
+{
+  if( first.get() < second.get() ){
+    return true;
+  }
+  return false;
+}
+auto operator>(HP first, const ATT& second)
+{
+  if( first.get() > second.get() ) {
+    return true;
+  }
+  return false;
+}
+auto operator>(ATT first, const HP& second)
+{
+  if( first.get() > second.get() ) {
+    return true;
+  }
+  return false;
+}
+
+
+
 
 
 
