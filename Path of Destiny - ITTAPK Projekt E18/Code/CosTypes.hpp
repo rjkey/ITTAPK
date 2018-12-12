@@ -2,6 +2,7 @@
 #define COSTYPES_HPP
 
 #include <iostream>
+#include <utility>  // for exchange(); -see overloads
 
 
 /////////////////////////////////////////////
@@ -123,6 +124,32 @@ public:
   {
     value_ = validate(*this, std::move(value));
   }
+
+  //////////////////// Overloads ////////////////////
+// Rule of 5: + Ostream
+~SafeType(){} // Destructor
+
+SafeType(const SafeType& other) { // copy constructor
+  value_ = other.value_;
+}
+/*
+SafeType(SafeType&& other) noexcept // move constructor
+  : value_(std::exchange(other.value_, NULL))
+{}
+*/
+SafeType(SafeType&& other) noexcept // move constructor
+  : value_(std::move(other.value_))
+{}
+
+SafeType& operator=(const SafeType& other) { // copy assignment
+      return *this = SafeType(other);
+}
+
+SafeType& operator=(SafeType&& other) noexcept { // move assignment
+    std::swap(value_, other.value_);
+    return *this;
+}//*/
+//////////////////// Overloads end ////////////////////
   
 private:
   T value_;
@@ -191,59 +218,88 @@ using DEF = SafeType<uint16_t, struct DEF_tag,  Addition, Subtraction, Multiply,
 /////////////////////////////////////////////
 // ***** Define valid arithmetic ***** //
 /////////////////////////////////////////////
+
+// Only subtract ATT from HP (NOT the other way around!)
 auto operator-(HP first, const ATT& second)
 {
   first.set(first.get() - second.get());;
   return std::move(first);
 }
 
+// ???
 
 
 
 
 
-
-
-
-//
-
-
+//////////////////// TEMP class for Gear //////////////////////////////
 template <typename T>
 class Gear
 {
 public:
-    Gear(){}
+  // Default constructor
+  Gear(){}
 
-    Gear (std::string name, T att_def){
-        weapon_amour = att_def;
-        name_ = name;
-    }
-    void printGear(){
-      std::cout << name_ << "\t" << weapon_amour << std::endl;
-    }
+  // Constructor
+  Gear (std::string name, T att_def){
+      weapon_amour_ = att_def;
+      name_ = name;
+  }
 
-  
-  /*auto outstream() const
-  {
-    return name_;
-  }*/
 
+  void printGear(){
+    std::cout << *this << std::endl;
+  }
+
+//////////////////// Overloads ////////////////////
+// Rule of 5: + Ostream
+~Gear(){} // Destructor
+
+Gear(const Gear& other) { // copy constructor
+  name_ = other.name_;
+  weapon_amour_ = other.weapon_amour_;
+}
+
+Gear(Gear&& other) noexcept // move constructor
+  : name_(std::exchange(other.name_, nullptr)),
+    weapon_amour_(std::exchange(other.weapon_amour_, nullptr))
+{}
+
+Gear& operator=(const Gear& other) { // copy assignment
+      return *this = Gear(other);
+}
+
+Gear& operator=(Gear&& other) noexcept { // move assignment
+    std::swap(name_, other.name_);
+    std::swap(weapon_amour_, other.weapon_amour_);
+    return *this;
+}
+
+/*/ Must be implemented for Hero.Show()
+auto outstream() const { // Ostream operator
+  return name_;
+}//*/
+
+
+friend std::ostream& operator<<(std::ostream& os, const Gear& G_Obj){ // Ostream overload
+  return os << G_Obj.name_ << " (" << G_Obj.weapon_amour_ << ")";
+}
 
 private:
     std::string name_;
-    T weapon_amour;
+    T weapon_amour_;
 };
 
 
-/*template<typename T>
-std::ostream& operator<<(std::ostream& os, const Gear<T>& first)
+/*/ Must be implemented for Hero.Show() (to print equipped items)
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const Gear<T>& G_Obj)
 {
-  os << first.outstream();
   return os;
-}*/
+}//*/
 
-//*/
 
 
 
 #endif //COSTYPES_HPP
+
