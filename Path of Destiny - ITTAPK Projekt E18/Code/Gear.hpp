@@ -20,6 +20,9 @@ private:
 		return rand() % (MAX - 1) + 0;
 	}
 public:
+	//Default Constructor
+	Gear(){}
+
 	Gear(T value) {
 		value_ = value;
 		if constexpr (std::is_same_v<T, ATT>)
@@ -32,21 +35,35 @@ public:
 		}
 	}
 
-	~Gear() {
-	}
-	void set_value(T value) {
-		value_ = value;
-	}
-	T get_value() {
-		return value_;
+	~Gear() {}
+
+	Gear(const Gear& other) { // copy constructor
+		name_ = other.name_;
+  		weapon_amour_ = other.weapon_amour_;
 	}
 
-	std::string get_name() const
-	{
-		return name_;
+	Gear(Gear&& other) noexcept // move constructor
+  		: name_(std::exchange(other.name_, nullptr)),
+    	weapon_amour_(std::exchange(other.weapon_amour_, nullptr))
+	{}
+
+	Gear& operator=(const Gear& other) { // copy assignment
+      return *this = Gear(other);
 	}
-	void show() {
+
+	Gear& operator=(Gear&& other) noexcept { // move assignment
+    	std::swap(name_, other.name_);
+    	std::swap(weapon_amour_, other.weapon_amour_);
+    	return *this;
 	}
+
+	friend std::ostream& operator<<(std::ostream& os, const Gear& G_Obj){ // Ostream overload
+  		return os << G_Obj.name_ << " (" << G_Obj.weapon_amour_ << ")";
+	}
+
+	void printGear(){
+		std::cout << *this << std::endl;
+  }
 };
 
 #endif // GEAR_H
