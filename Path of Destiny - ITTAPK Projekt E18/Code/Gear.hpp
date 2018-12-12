@@ -37,13 +37,11 @@ template <typename T>
 Gear<T>::Gear(T att_def)
 {
 	weapon_amour_ = att_def;
-
-	if constexpr (std::is_same_v<T, ATT>)
-	{
+	
+	if(std::is_same_v<T, ATT>){
 		name_ = list_of_weapons[random_number()];
-	}
-	else if (std::is_same_v<T, DEF>)
-	{
+	} 
+	else if(std::is_same_v<T, DEF>){
 		name_ = list_of_armors[random_number()];
 	}
 }
