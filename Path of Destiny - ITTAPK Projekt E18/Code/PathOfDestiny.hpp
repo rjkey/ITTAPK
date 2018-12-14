@@ -1,31 +1,34 @@
-#include "Hero.hpp"
-#include "CostumeTypes.hpp"
+//#include "Hero.hpp"
+#include "CosTypes.hpp"
 #include<list>
 //#include "EnemyList.hpp"
 #include<variant>
+#include"Location.hpp"
 #include "Arena.hpp"
-#include "Path.hpp"
 
 class PathOfDestiny
 {
 private:
     /* data */
-
-    std::variant<Arena,Path> currentLocation_, newLocation_;
+    LocationFactory locationFactory_;
+    std::variant<Arena<DEF>,Arena<ATT>,Path> currentLocation_;
+    std::variant<Arena<DEF>,Arena<ATT>,Path> newLocation_;
+ //   Hero hero; 
 
 public:
-    PathOfDestiny(std::variant<Arena,Path> currentLocation);
+    PathOfDestiny();
 
     ~PathOfDestiny();
-    void movement(Hero hero,list<std::variant<Arena, Path>> listLocation);
+    void movement();
     // combat skal være overlaod. viriadic er mere til recursiv kald af function.
     
 };
 
-PathOfDestiny::PathOfDestiny(std::variant<Arena,Path> currentLocation)
- : currentLocation_(currentLocation)
+PathOfDestiny::PathOfDestiny()
 {
-    
+    locationFactory_ = LocationFactory();
+    // start with a random path. 
+    currentLocation_ = locationFactory_.createPath();
 }
 
 PathOfDestiny::~PathOfDestiny()
@@ -33,15 +36,15 @@ PathOfDestiny::~PathOfDestiny()
 }
 
 
-void PathOfDestiny::movement(Hero hero, list<std::variant<Arena, Path>> listLocation)
+void PathOfDestiny::movement()
 {
        // present location 
-
-       if (std::holds_alternative<Arena>(currentLocation_)) {
+       // currentLocation_.show(); // use a visitor
+       //if (std::holds_alternative<Arena>(currentLocation_)) {
            /* code */
            // Combat call !??! 
            // get a path to move on from - as current location
-       }
+       //}
 
         // show possible directions
         // await player input 
@@ -52,5 +55,24 @@ void PathOfDestiny::movement(Hero hero, list<std::variant<Arena, Path>> listLoca
             //  display it, await new input
         // change gear??
 
+        // 0 for Arena else Path
+        if ((rand() % 2)<1) {
+            int value = rand() % 21 -10; // combatModifier between -10,10 
+            // If negative it a DEF modifier
+            if (value<1) {
+                DEF combatMod = value;
+                newLocation_ = locationFactory_.createArena(combatMod);
+            }
+            else // If positive an ATT modifier
+            {
+                ATT combatMod = value;
+                newLocation_ = locationFactory_.createArena(combatMod);
+            }           
+        }
+        else
+        {
+            newLocation_ = locationFactory_.createPath(); 
+        }
+    currentLocation_ = newLocation_;
        
 }
