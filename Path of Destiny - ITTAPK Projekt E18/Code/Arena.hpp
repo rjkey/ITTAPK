@@ -8,9 +8,6 @@
 
 using namespace std;
 
-static string arenaStrings[] = {"foggy swamps", "hills", "forrest clearing", "marketplace"};
-
-
 
 template<typename T>
 class Arena 
@@ -19,7 +16,7 @@ private:
     string areaName_;
     T combatmodifier_; 
 public:
-    Arena(int name, T combatmod );
+    Arena(string name, T combatmod );
     Arena();
     ~Arena();
     T getCombatModifier();
@@ -27,14 +24,14 @@ public:
 
  friend ostream& operator<< (ostream& os, const Arena& arena)
  {
-     return os << "you have entered " << arena.areaName_ << "affecting your attack with "<< arena.combatmodifier_ << std::endl;  
+     return os << "you have entered " << arena.areaName_ << "affecting your attack with "<< arena.combatmodifier_;// << std::endl;  
      //(arena.combatmodifier_<0? " lowering " : " adding ") << 
  }
 };
 
 template<typename T>
-Arena<T>::Arena(int name, T combatmod)
-    :areaName_(arenaStrings[name]),combatmodifier_(combatmod)
+Arena<T>::Arena(string name, T combatmod)
+    :areaName_(name),combatmodifier_(combatmod)
 {
 }
 
@@ -42,7 +39,7 @@ template<typename T>
 Arena<T>::Arena()
 {
     areaName_ = "unknown";
-    combatmodifier_ = (ATT) 0 ; 
+    //combatmodifier_ = (ATT) 0 ; 
 }
 
 template<typename T>
@@ -62,10 +59,5 @@ void Arena<T>::show() const{
 cout << "you have entered " << areaName_ << " affecting your attack with "<< combatmodifier_ << std::endl;  
      //(arena.combatmodifier_<0? " lowering " : " adding ") << 
 }
-
-
-
-
-
 
 #endif //ARENA_HPP
