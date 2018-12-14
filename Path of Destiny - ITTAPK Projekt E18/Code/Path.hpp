@@ -3,7 +3,6 @@
 
 #include <string>
 #include <iostream>
-#include "Location.hpp"
 
 using namespace std; 
 
@@ -21,11 +20,11 @@ enum Directions
 };
 
 
-class Path : virtual public Location
+class Path
 {
 private:
-    string AreaName_; 
-    uint DirectionsToGo_;
+    string areaName_; 
+    string DirectionsToGo_;
 
 
 
@@ -36,11 +35,15 @@ public:
     void setDirectionsToGo(uint directions);
     void show();
 
+friend ostream& operator<< (ostream& os, const Path& path)
+ {
+     return os << "you have entered " << path.areaName_ << "you can "<< path.DirectionsToGo_ ; //<< std::endl;  
+ }
 
 };
 
 Path::Path(string name, uint directions)
-:AreaName_(name)
+:areaName_(name)
 {
     setDirectionsToGo(directions);
     
@@ -48,8 +51,8 @@ Path::Path(string name, uint directions)
 
 Path::Path()
 {
-    AreaName_ = "unknown";
-    DirectionsToGo_ = NULL;
+    areaName_ = "unknown";
+    DirectionsToGo_ = "Deadend";
 }
 
 Path::~Path()
@@ -60,11 +63,11 @@ void Path::setDirectionsToGo(uint directions)
 {
     
     if (directions<4) {
-        DirectionsToGo_ = directions;
+        DirectionsToGo_ = DirectionsStrings[directions];
     }
     else
     {
-        DirectionsToGo_ = NULL;
+        DirectionsToGo_ = "Deadend";
     }
     
     
@@ -72,7 +75,7 @@ void Path::setDirectionsToGo(uint directions)
 
 void Path::show()
 {
-    cout<< "entered " << AreaName_ << " you can "<<  DirectionsStrings[DirectionsToGo_]<< endl;
+    cout<< "entered " << areaName_ << " you can "<<  DirectionsToGo_<< endl;
 
 }
 
