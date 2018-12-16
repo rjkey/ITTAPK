@@ -7,6 +7,7 @@
 class Opponent
 {
 private:
+protected:
 	std::string name_;
 	HP health_;
 	ATT attack_;

@@ -1,18 +1,10 @@
 #ifndef MONSTER_H
 #define MONSTER_H
 
-#include "CosTypes.hpp"
 #include "Opponent.hpp"
 
 class Monster : public Opponent
 {
-private:
-	std::string name_;
-	HP health_;
-	ATT attack_;
-	DEF defence_;
-    Gear<ATT> weapon_;
-    Gear<DEF> armour_;
 public:
     Monster();
     ~Monster();

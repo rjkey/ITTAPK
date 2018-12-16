@@ -1,18 +1,10 @@
 #ifndef HUMANOID_H
 #define HUMANOID_H
 
-#include "CosTypes.hpp"
 #include "Opponent.hpp"
 
 class Humanoid : public Opponent
 {
-private:
-	std::string name_;
-	HP health_;
-	ATT attack_;
-	DEF defence_;
-    Gear<ATT> weapon_;
-    Gear<DEF> armour_;
 
 public:
     Humanoid();
