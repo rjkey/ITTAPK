@@ -1,42 +1,73 @@
+#ifndef MONSTER_H
+#define MONSTER_H
+
 #include "CosTypes.hpp"
+#include "Opponent.hpp"
 
 class Monster : public Opponent
 {
 private:
+	std::string name_;
+	HP health_;
+	ATT attack_;
+	DEF defence_;
+    Gear<ATT> weapon_;
+    Gear<DEF> armour_;
 public:
+    Monster();
+    ~Monster();
+
 	HP getHealth() override;
 	ATT getAttack() override;
 	DEF getDefence() override;
-	void setHealth(HP) override;
-	void setAttack(ATT) override;
-	void setDefence(DEF) override;
+
+	void setHealth(HP health) override;
+	void setAttack(ATT attack) override;
+	void setDefence(DEF defence) override;
+
 	void show() override;
 	void showStats() override;
 	void showInventory() override;
+    friend std::ostream& operator<<(std::ostream& os, const Monster& M_Obj);
 };
+
+Monster::Monster()
+{    
+    //set health, attack and defence
+}
+
+Monster::~Monster()
+{
+}
 
 HP Monster::getHealth()
 {
+    return health_;
 }
 
 ATT Monster::getAttack()
 {
+    return attack_;
 }
 
 DEF Monster::getDefence()
 {
+    return defence_;
 }
 
-void Monster::setHealth(HP)
+void Monster::setHealth(HP health)
 {
+    health_ = health;
 }
 
-void Monster::setAttack(ATT)
+void Monster::setAttack(ATT attack)
 {
+    attack_ = attack;
 }
 
-void Monster::setDefence(DEF)
+void Monster::setDefence(DEF defence)
 {
+    defence_ = defence;
 }
 
 void Monster::show()
@@ -45,8 +76,16 @@ void Monster::show()
 
 void Monster::showStats()
 {
+    std::cout << *this << std::endl;
 }
 
 void Monster::showInventory()
 {
 }
+
+std::ostream& operator<<(std::ostream& os, const Monster &M_Obj)
+{
+    return os << M_Obj.name_ << " (" << M_Obj.health_ << M_Obj.attack_ << M_Obj.defence_ << ")";
+}
+
+#endif // MONSTER_H
