@@ -5,5 +5,10 @@
 
 int main()
 {
+	OpponentFactory of;
+
+	auto r = of.get_opponent(1);
+	r->showStats();
+
 	return 0;
 }

@@ -3,33 +3,42 @@
 
 #include "Opponent.hpp"
 
+static std::array<std::string, NUMBER_OF_OPPONENT_TYPES> list_of_monsters = { "Werewolf", "Troll", "Grizzly bear", "Warthog" };
+
 class Monster : public Opponent
 {
 public:
     Monster();
     ~Monster();
 
+    std::string getName() override;
 	HP getHealth() override;
 	ATT getAttack() override;
 	DEF getDefence() override;
 
-	void setHealth(HP health) override;
-	void setAttack(ATT attack) override;
-	void setDefence(DEF defence) override;
+    Gear<ATT> getWeapon() override;
+    Gear<DEF> getArmour() override;
 
-	void show() override;
 	void showStats() override;
-	void showInventory() override;
     friend std::ostream& operator<<(std::ostream& os, const Monster& M_Obj);
 };
 
 Monster::Monster()
-{    
-    //set health, attack and defence
+{
+    srand (time(0)); //seed the rand for random numbers
+    name_ = list_of_monsters[rand() % (NUMBER_OF_OPPONENT_TYPES - 1) + 0]; 
+    health_ = rand() % MAX_HP + 1;
+    attack_ = rand() % MAX_ATT + 1;
+    defence_ = rand() % MAX_DEF + 1;
 }
 
 Monster::~Monster()
 {
+}
+
+std::string Monster::getName()
+{
+    return name_;
 }
 
 HP Monster::getHealth()
@@ -47,23 +56,14 @@ DEF Monster::getDefence()
     return defence_;
 }
 
-void Monster::setHealth(HP health)
+Gear<ATT> Monster::getWeapon()
 {
-    health_ = health;
+    return weapon_;
 }
 
-void Monster::setAttack(ATT attack)
+Gear<DEF> Monster::getArmour()
 {
-    attack_ = attack;
-}
-
-void Monster::setDefence(DEF defence)
-{
-    defence_ = defence;
-}
-
-void Monster::show()
-{
+    return armour_;
 }
 
 void Monster::showStats()
@@ -71,13 +71,9 @@ void Monster::showStats()
     std::cout << *this << std::endl;
 }
 
-void Monster::showInventory()
-{
-}
-
 std::ostream& operator<<(std::ostream& os, const Monster &M_Obj)
 {
-    return os << M_Obj.name_ << " (" << M_Obj.health_ << M_Obj.attack_ << M_Obj.defence_ << ")";
+    return os << M_Obj.name_ << " (" << " Health: " << M_Obj.health_ << " Attack: " << M_Obj.attack_ << " Defence: " << M_Obj.defence_ << ")";
 }
 
 #endif // MONSTER_H

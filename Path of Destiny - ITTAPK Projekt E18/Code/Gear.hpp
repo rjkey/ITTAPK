@@ -1,12 +1,12 @@
 ﻿#ifndef GEAR_H
 #define GEAR_H
-#define MAX 3
+#define MAX 4
 #include <string>
 #include <array>
 #include "CosTypes.hpp"
 
-std::array<std::string, MAX> list_of_weapons = { "Axe", "Sword", "Mace" };
-std::array<std::string, MAX> list_of_armors = {"Iron armor", "Wooden armor", "Steel armor", };
+static std::array<std::string, MAX> list_of_weapons = { "Axe", "Sword", "Mace", "Knife" };
+static std::array<std::string, MAX> list_of_armors = {"Shield", "Helmet", "Chestplate", "Chainmail"};
 
 template <typename T>
 class Gear
@@ -20,7 +20,11 @@ public:
 	Gear(Gear&& other) noexcept;
 	Gear& operator=(const Gear& other);
 	Gear& operator=(Gear&& other) noexcept;
-	friend std::ostream& operator<<(std::ostream& os, const Gear& G_Obj);
+	friend std::ostream& operator<<(std::ostream& os, const Gear& G_Obj)
+	{
+		return os << G_Obj.name_ << " (" << G_Obj.weapon_amour_ << ")";
+	}
+	T getGearValue();
 	void printGear();
 private:
 	T weapon_amour_;
@@ -80,20 +84,21 @@ Gear<T>& Gear<T>::operator=(Gear&& other) noexcept
 }
 
 template <typename T>
-std::ostream& operator<<(std::ostream& os, const Gear<T> &G_Obj)
-{
-	return os << G_Obj.name_ << " (" << G_Obj.weapon_amour_ << ")";
-}
-
-template <typename T>
 void Gear<T>::printGear()
 {
 	std::cout << *this << std::endl;
 }
 
 template <typename T>
+T Gear<T>::getGearValue()
+{
+	return weapon_amour_;
+}
+
+template <typename T>
 size_t Gear<T>::random_number()
 {
+	srand (time(0));
 	return rand() % (MAX - 1) + 0;
 }
 
