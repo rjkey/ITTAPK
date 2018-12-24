@@ -24,7 +24,7 @@ public:
 
  friend ostream& operator<< (ostream& os, const Arena& arena)
  {
-     return os << "you have entered " << arena.areaName_ << "affecting your attack with "<< arena.combatmodifier_;// << std::endl;  
+     return os << "you have entered " << arena.areaName_ << " affecting your attack with "<< arena.combatmodifier_;// << std::endl;  
      //(arena.combatmodifier_<0? " lowering " : " adding ") << 
  }
 };
@@ -59,5 +59,6 @@ void Arena<T>::show() const{
 cout << "you have entered " << areaName_ << " affecting your attack with "<< combatmodifier_ << std::endl;  
      //(arena.combatmodifier_<0? " lowering " : " adding ") << 
 }
+
 
 #endif //ARENA_HPP

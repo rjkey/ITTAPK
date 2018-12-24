@@ -25,6 +25,7 @@ class Path
 private:
     string areaName_; 
     string DirectionsToGo_;
+    int directions__;
 
 
 
@@ -33,17 +34,19 @@ public:
     Path();
     ~Path();
     void setDirectionsToGo(uint directions);
+    string getDirectionsToGo();
     void show();
+    int getValue();
 
 friend ostream& operator<< (ostream& os, const Path& path)
  {
-     return os << "you have entered " << path.areaName_ << "you can "<< path.DirectionsToGo_ ; //<< std::endl;  
+     return os << " you have entered " << path.areaName_ << " you can "<< path.DirectionsToGo_ ; //<< std::endl;  
  }
 
 };
 
 Path::Path(string name, uint directions)
-:areaName_(name)
+:areaName_(name), directions__(directions)
 {
     setDirectionsToGo(directions);
     
@@ -69,9 +72,13 @@ void Path::setDirectionsToGo(uint directions)
     {
         DirectionsToGo_ = "Deadend";
     }
-    
-    
 }
+
+string Path::getDirectionsToGo()
+{
+    return DirectionsToGo_;
+}
+
 
 void Path::show()
 {
@@ -79,5 +86,8 @@ void Path::show()
 
 }
 
+int Path::getValue(){
+    return directions__;
+}
 
 #endif // PATH_HPP

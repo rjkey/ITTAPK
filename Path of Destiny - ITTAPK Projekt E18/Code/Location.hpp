@@ -45,10 +45,8 @@ Arena<S> LocationFactory::createArena(S combatMod)
     int nameIndex = rand() % posibleArenas; 
     string name = arenaStrings[nameIndex];
     Arena newArena = Arena(name, combatMod);
-    cout<< "made an Arena: "<< newArena<< "\n";
-    return newArena;
-    
-    
+    //cout<< "made an Arena: "<< newArena<< "\n";
+    return newArena;   
 }
 
 Path LocationFactory::createPath()
@@ -61,7 +59,7 @@ Path LocationFactory::createPath()
     int directions = rand() % 4; 
     Path newPath = Path(name, directions);
     
-    cout<< "made an path: "<< newPath<< "\n";
+    //cout<< "made an path: "<< newPath<< "\n";
     return newPath; 
 }
 
