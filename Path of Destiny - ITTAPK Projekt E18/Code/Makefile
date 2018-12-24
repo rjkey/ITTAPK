@@ -19,7 +19,7 @@ BUILD_DIR=build/target
 BIN_DIR=bin/target
 endif
 #define project src NOTE the addprefix to define build path
-SOURCES= $(addprefix ${BUILD_DIR}/,$(wildcard *.cpp))  
+SOURCES= $(addprefix ${BUILD_DIR}/,$(wildcard main.cpp))  #Don't use wildcard.cpp - we dont want to compile all cpp files.!! just our real main. 
 #convert %.cpp files to %.o files.
 OBJECTS = ${SOURCES:.cpp=.o}
 #add dependency files (*.h,*.hpp) 
