@@ -40,7 +40,7 @@ public:
 
 friend ostream& operator<< (ostream& os, const Path& path)
  {
-     return os << " you have entered " << path.areaName_ << " you can "<< path.DirectionsToGo_ ; //<< std::endl;  
+     return os << " you have entered " << path.areaName_ << " you can go"<< path.DirectionsToGo_ ; //<< std::endl;  
  }
 
 };
