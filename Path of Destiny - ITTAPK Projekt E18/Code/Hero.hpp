@@ -3,7 +3,7 @@
 
 #include<iostream>
 #include"CosTypes.hpp"
-
+#include"Gear.hpp"
 #include<string>
 using namespace std;
 #include<list>
