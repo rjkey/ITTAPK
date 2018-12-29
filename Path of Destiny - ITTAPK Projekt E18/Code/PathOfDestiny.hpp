@@ -1,19 +1,37 @@
-//#include "Hero.hpp"
+#include "Hero.hpp"
 #include "CosTypes.hpp"
 #include<list>
-//#include "EnemyList.hpp"
 #include<variant>
 #include"Location.hpp"
-#include "Arena.hpp"
+//#include "Arena.hpp"
 
 #include <type_traits>
+#include <functional> 
+
+
+struct Dummy1
+{
+    
+};
+
+struct Dummy2
+{
+    /* data */
+};
+
 
 
 // the variant to visit
 using var_t = std::variant<Arena<DEF>,Arena<ATT>,Path>;
 // helper type for the visitor #3
-template<class T> struct always_false : std::false_type {};
+//template<class T> struct always_false : std::false_type {};
 
+
+namespace action
+{
+    void combat(Arena<DEF> Arena, Hero hero);
+    void combat(Arena<ATT> Arena, Hero hero);
+} // action
 
 
 
@@ -25,7 +43,7 @@ private:
     LocationFactory locationFactory_;
     std::variant<Arena<DEF>,Arena<ATT>,Path> currentLocation_;
     std::variant<Arena<DEF>,Arena<ATT>,Path> newLocation_;
- //   Hero hero; 
+    Hero hero_; 
 
 public:
     PathOfDestiny();
@@ -33,6 +51,7 @@ public:
     ~PathOfDestiny();
     void gameLogic();
     void movement();
+    
     // combat skal være overlaod. viriadic er mere til recursiv kald af function.
     
 };
@@ -49,117 +68,153 @@ PathOfDestiny::~PathOfDestiny()
 }
 
 void PathOfDestiny::gameLogic()
-{
-           // present location 
-       // currentLocation_.show(); // use a visitor
-       //if (std::holds_alternative<Arena>(currentLocation_)) {
-           /* code */
-           // Combat call !??! 
-           // get a path to move on from - as current location
-       //}
+{   
+    auto combatDEF = std::bind(static_cast<void(*)(Arena<DEF>, Hero)>(action::combat),std::placeholders::_1, hero_);
+    // kan gribes med [&] [this] 
+    auto combatATT = [&hero = this->hero_](Arena<ATT> arena){action::combat(arena, hero);};
 
-        // show possible directions
-        // await player input 
-        // handle input
-            // if valid 
-            //  get location/arena
-            // if unvalid 
-            //  display it, await new input
-        // change gear??
+    uint locationType; // 0 = Arena with DEF, 1 = Arena with ATT, 2= Path
+        
+        // present location 
+    // currentLocation_.show(); // use a visitor
+    //if (std::holds_alternative<Arena>(currentLocation_)) {
+        /* code */
+        // Combat call !??! 
+        // get a path to move on from - as current location
+    //}
 
-
-        // make visit here. for currentlocation maybe 3. method could work. 
-
-
-        // 2. value-returning visitor, demonstrates the idiom of returning another variant
-        //var_t w = std::visit([](auto&& arg) -> var_t {return arg;}, currentLocation_);
+    // show possible directions
+    // await player input 
+    // handle input
+        // if valid 
+        //  get location/arena
+        // if unvalid 
+        //  display it, await new input
+    // change gear??
  
-        // 3. type-matching visitor: a lambda that handles each type differently
-        std::cout << "Visiting currentLocation";
-        std::visit([](auto&& arg) {
-            using T = std::decay_t<decltype(arg)>;
-            if constexpr (std::is_same_v<T, Arena<DEF>>)
-                std::cout << "Arena DEF with value " << arg.getCombatModifier() << '\n';
-            else if constexpr (std::is_same_v<T, Arena<ATT>>)
-                std::cout << "Arena ATT with value " << arg.getCombatModifier() << '\n';
-            else if constexpr (std::is_same_v<T, Path>){
-                std::cout << "PATH with directions " << arg.getDirectionsToGo() << '\n';
-            }
-            else 
-                static_assert(always_false<T>::value, "non-exhaustive visitor!");
-        }, currentLocation_);
-        //*/
+
+    // 2. value-returning visitor, demonstrates the idiom of returning another variant
+    //var_t w = std::visit([](auto&& arg) -> var_t {return arg;}, currentLocation_);
+
+    // 3. type-matching visitor: a lambda that handles each type differently
+    std::cout << "Visiting currentLocation";
+    std::visit([&combatDEF, &combatATT](auto&& arg) {
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_same_v<T, Arena<DEF>>){
+            std::cout << "Arena DEF with value " << arg.getCombatModifier() << '\n';
+            combatDEF(arg);
+        }
+        else if constexpr (std::is_same_v<T, Arena<ATT>>){
+            std::cout << "Arena ATT with value " << arg.getCombatModifier() << '\n';
+            combatATT(arg);
+        }
+        else if constexpr (std::is_same_v<T, Path>){
+            std::cout << "PATH with directions " << arg.getDirectionsToGo() << '\n';
+        }
+        else 
+            static_assert(always_false<T>::value, "non-exhaustive visitor!");
+    }, currentLocation_);
+
+    movement();
+    
+
+    //*/
 }
 
 void PathOfDestiny::movement()
 {
 
-    /*  Chris Debugging   Not working
-    char input;
+    // Chris Debugging   Not working
+    char input; 
     int ways;
-    cout<< "Choose the path to follow, using first letter in posible ways" ; 
-    cin >> input;
+    bool validInput = false;
     // 2. value-returning visitor, demonstrates the idiom of returning another variant
-    var_t w = std::visit([](auto&& arg) -> var_t {return arg;}, currentLocation_);
+    //var_t w = std::visit([](auto&& arg) -> var_t {return arg;}, currentLocation_);
 
     // 3. type-matching visitor: to return posible ways.
-    std::visit([](auto&& arg) {
+    ways = std::visit([](auto&& arg) -> int {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, Path>){
+            arg.show();
             return arg.getValue();
         }
-        else if constexpr (std::is_same_v<T, Arena<DEF>>)
-            cout << "Something wrong PathOfDestiny Line 110";//Do nothing
-        else if constexpr (std::is_same_v<T, Arena<ATT>>)
-            cout << "Something wrong PathOfDestiny Line 110";//Do nothing
-        else 
-            static_assert(always_false<T>::value, "non-exhaustive visitor!");
-    }, w);
+    }, currentLocation_);
     
 
-
-
-
-
-    if (ways == 0) {
-        
-        switch (input)
-        {
-            case 'l':
-                cout << "Moving Left";
-                break;
-            case 'a':
-                cout << "Moving forward";
-            default:
-                cout << "invalid input";
-                break;
-        }
-    }
-    else if (ways == 1) {
-       
-    }
-    else if (ways == 2) {
-       
-    }
-    else if (ways == 3) {
-       
-    }   
-//*/
-        // this work
-        // 3. type-matching visitor: a lambda that handles each type differently
-        std::cout << "Visiting currentLocation";
-        std::visit([](auto&& arg) {
-            using T = std::decay_t<decltype(arg)>;
-            if constexpr (std::is_same_v<T, Arena<DEF>>)
-                std::cout << "Arena DEF with value " << arg.getCombatModifier() << '\n';
-            else if constexpr (std::is_same_v<T, Arena<ATT>>)
-                std::cout << "Arena ATT with value " << arg.getCombatModifier() << '\n';
-            else if constexpr (std::is_same_v<T, Path>){
-                std::cout << "PATH with directions " << arg.getDirectionsToGo() << '\n';
+    do{
+        cout<< "Choose the path to follow, using first letter in the posible ways: " ; 
+        cin >> input;
+        if (ways == 0) {
+            
+            switch (input)
+            {
+                case 'l':
+                    cout << "moving Left" << endl;
+                    validInput = true;
+                    break;
+                case 'a':
+                    cout << "moving forward"<< endl;
+                    validInput = true;
+                    break;
+                default:
+                    cout << "invalid input, try again"<< endl;
+                    break;
             }
-            else 
-                static_assert(always_false<T>::value, "non-exhaustive visitor!");
-        }, currentLocation_);//*/
+        }
+        else if (ways == 1) {
+            switch (input)
+            {
+                case 'r':
+                    cout << "moving right"<< endl;
+                    validInput = true;
+                    break;
+                case 'a':
+                    cout << "moving forward"<< endl;
+                    validInput = true;
+                    break;
+                default:
+                    cout << "invalid input, try again"<< endl;
+                    break;
+            }
+        }
+        else if (ways == 2) {
+            switch (input)
+            {
+                case 'l':
+                    cout << "moving Left"<< endl;
+                    validInput = true;
+                    break;
+                case 'r':
+                    cout << "moving right"<< endl;
+                    validInput = true;
+                    break;
+                default:
+                    cout << "invalid input, try again"<< endl;
+                    break;
+            }
+        }
+        else if (ways == 3) {
+            switch (input)
+            {
+                case 'l':
+                    cout << "moving Left "<< endl;
+                    validInput = true;
+                    break;
+                case 'r':
+                    cout << "moving right "<< endl;
+                    validInput = true;
+                    break;
+                case 'a':
+                    cout << "moving forward "<< endl;
+                    validInput = true;
+                    break;
+                default:
+                    cout << "invalid input, try again"<< endl;
+                    break;
+            }
+        }   
+    }while(!validInput);
+    //*/ 
 
 
         // 0 for Arena else Path
@@ -182,4 +237,12 @@ void PathOfDestiny::movement()
         }
     currentLocation_ = newLocation_;
        //*/
+} // Working movement
+
+void action::combat(Arena<DEF> arena, Hero hero){
+    cout << "Entered DEF combat with Hero: "  << "in the arena " << arena;
+}
+
+void action::combat(Arena<ATT> arena, Hero hero){
+    cout << "Entered ATT combat with Hero: " << "in the arena " << arena;
 }
