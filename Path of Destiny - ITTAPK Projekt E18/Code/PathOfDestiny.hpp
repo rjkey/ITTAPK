@@ -19,8 +19,8 @@ template<class T> struct always_false : std::false_type {};
 
 namespace action
 {
-    void combat(Arena<DEF> Arena, Opponent* enemy, Hero hero);
-    void combat(Arena<ATT> Arena, Opponent* enemy, Hero hero);
+    void combat(Arena<DEF> Arena, std::unique_ptr<Opponent> enemy, Hero hero);
+    void combat(Arena<ATT> Arena, std::unique_ptr<Opponent> enemy, Hero hero);
 } // action
 
 
@@ -61,9 +61,9 @@ PathOfDestiny::~PathOfDestiny()
 
 void PathOfDestiny::gameLogic()
 {   
-    auto combatDEF = std::bind(static_cast<void(*)(Arena<DEF>, Opponent*, Hero)>(action::combat),std::placeholders::_1, std::placeholders::_2, hero_);
+    auto combatDEF = std::bind(static_cast<void(*)(Arena<DEF>, std::unique_ptr<Opponent>, Hero)>(action::combat),std::placeholders::_1, std::placeholders::_2, hero_);
     // kan gribes med [&] [this] 
-    auto combatATT = [&hero = this->hero_](Arena<ATT> arena, Opponent* enemy){action::combat(arena, enemy, hero);};
+    auto combatATT = [&hero = this->hero_](Arena<ATT> arena, std::unique_ptr<Opponent> enemy){action::combat(arena, std::move(enemy), hero);};
     bool combatDone = false;
  
     // combine 2. and 3. for return value, from variant. 
@@ -229,7 +229,7 @@ void PathOfDestiny::movement()
        //*/
 } // Working movement
 
-void action::combat(Arena<DEF> arena, Opponent* enemy, Hero hero){
+void action::combat(Arena<DEF> arena, std::unique_ptr<Opponent> enemy, Hero hero){
     DEF dmg; 
     std::cout << "You encountered a" << enemy->getName() << "!\n\r";
     hero.showStats();
@@ -247,7 +247,10 @@ void action::combat(Arena<DEF> arena, Opponent* enemy, Hero hero){
     }while( hero.getHealth() < 1 || enemy->getHealth() < 1 );
 }
 
-void action::combat(Arena<ATT> arena, Opponent*, Hero hero){
+
+
+
+void action::combat(Arena<ATT> arena, std::unique_ptr<Opponent> enemy , Hero hero){
     cout << "Entered ATT combat with Hero: " << hero << "in the arena " << arena << std::endl;
 }
 
