@@ -1,13 +1,13 @@
-
+#ifndef PATHOFDESTINY_HPP
+#define PATHOFDESTINY_HPP
 
 #include "Hero.hpp"
-#include "CosTypes.hpp"
-#include<list>
-#include<variant>
-#include"Location.hpp"
-//#include "Arena.hpp"
-
-#include <type_traits>
+//#include "CosTypes.hpp"
+#include "Location.hpp"
+#include "OpponentFactory.hpp"
+#include <list>
+#include <variant>
+#include <assert.h>
 #include <functional> 
 
 
@@ -19,8 +19,8 @@ template<class T> struct always_false : std::false_type {};
 
 namespace action
 {
-    void combat(Arena<DEF> Arena, Hero hero);
-    void combat(Arena<ATT> Arena, Hero hero);
+    void combat(Arena<DEF> Arena, Opponent* enemy, Hero hero);
+    void combat(Arena<ATT> Arena, Opponent* enemy, Hero hero);
 } // action
 
 
@@ -31,6 +31,7 @@ class PathOfDestiny
 private:
     /* data */
     LocationFactory locationFactory_;
+    OpponentFactory opponentFactory_;
     std::variant<Arena<DEF>,Arena<ATT>,Path> currentLocation_;
     std::variant<Arena<DEF>,Arena<ATT>,Path> newLocation_;
     Hero hero_; 
@@ -49,6 +50,7 @@ public:
 PathOfDestiny::PathOfDestiny()
 {
     locationFactory_ = LocationFactory();
+    opponentFactory_ = OpponentFactory();
     // start with a random path. 
     currentLocation_ = locationFactory_.createPath();
 }
@@ -59,44 +61,28 @@ PathOfDestiny::~PathOfDestiny()
 
 void PathOfDestiny::gameLogic()
 {   
-    auto combatDEF = std::bind(static_cast<void(*)(Arena<DEF>, Hero)>(action::combat),std::placeholders::_1, hero_);
+    auto combatDEF = std::bind(static_cast<void(*)(Arena<DEF>, Opponent*, Hero)>(action::combat),std::placeholders::_1, std::placeholders::_2, hero_);
     // kan gribes med [&] [this] 
-    auto combatATT = [&hero = this->hero_](Arena<ATT> arena){action::combat(arena, hero);};
+    auto combatATT = [&hero = this->hero_](Arena<ATT> arena, Opponent* enemy){action::combat(arena, enemy, hero);};
     bool combatDone = false;
-        
-        // present location 
-    // currentLocation_.show(); // use a visitor
-    //if (std::holds_alternative<Arena>(currentLocation_)) {
-        /* code */
-        // Combat call !??! 
-        // get a path to move on from - as current location
-    //}
-
-    // show possible directions
-    // await player input 
-    // handle input
-        // if valid 
-        //  get location/arena
-        // if unvalid 
-        //  display it, await new input
-    // change gear??
  
-
+    // combine 2. and 3. for return value, from variant. 
     // 2. value-returning visitor, demonstrates the idiom of returning another variant
     //var_t w = std::visit([](auto&& arg) -> var_t {return arg;}, currentLocation_);
 
     // 3. type-matching visitor: a lambda that handles each type differently
     //std::cout << "Visiting currentLocation \n";
-    combatDone = std::visit([&combatDEF, &combatATT](auto&& arg) -> bool {
+    combatDone = std::visit([&combatDEF, &combatATT, &enemyFactory = this->opponentFactory_](auto&& arg) -> bool {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, Arena<DEF>>){
             std::cout << "Arena DEF with value " << arg.getCombatModifier() << '\n';
-            combatDEF(arg);
+            
+            combatDEF(arg,enemyFactory.get_opponent());
             return true;
         }
         else if constexpr (std::is_same_v<T, Arena<ATT>>){
             std::cout << "Arena ATT with value " << arg.getCombatModifier() << '\n';
-            combatATT(arg);
+            combatATT(arg,enemyFactory.get_opponent());
             return true;
         }
         else if constexpr (std::is_same_v<T, Path>){
@@ -108,7 +94,7 @@ void PathOfDestiny::gameLogic()
     }, currentLocation_);
 
     // Need a Path after combat to move on. 
-    if (combatDone) {
+    if(combatDone) {
         currentLocation_= locationFactory_.createPath();
     }
     
@@ -134,6 +120,13 @@ void PathOfDestiny::movement()
         if constexpr (std::is_same_v<T, Path>){
             arg.show();
             return arg.getValue();
+        }
+        else 
+        {
+            // must be assert since input is decided runtime, if not Path = plz fail!
+            assert(true);
+            cout << "ERROR PathOfDestiny::movement - Not Path in currentlocation!\n";
+            return 0;
         }
     }, currentLocation_);
     
@@ -236,10 +229,26 @@ void PathOfDestiny::movement()
        //*/
 } // Working movement
 
-void action::combat(Arena<DEF> arena, Hero hero){
-    cout << "Entered DEF combat with Hero: " << hero << "in the arena " << arena << std::endl;
+void action::combat(Arena<DEF> arena, Opponent* enemy, Hero hero){
+    DEF dmg; 
+    std::cout << "You encountered a" << enemy->getName() << "!\n\r";
+    hero.showStats();
+    enemy->showStats();
+
+    do{
+         // enemy attacks hero. 
+        dmg =  hero.getDefence() - enemy->getAttack();
+        if ( dmg < (DEF) 0) {
+            hero.setHealth(hero.getHealth() + dmg);
+        }
+        dmg = enemy->getDefence() - hero.getAttack();
+
+
+    }while( hero.getHealth() < 1 || enemy->getHealth() < 1 );
 }
 
-void action::combat(Arena<ATT> arena, Hero hero){
+void action::combat(Arena<ATT> arena, Opponent*, Hero hero){
     cout << "Entered ATT combat with Hero: " << hero << "in the arena " << arena << std::endl;
 }
+
+#endif // PATHOFDESTINY_HPP
