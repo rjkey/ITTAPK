@@ -12,8 +12,10 @@ class OpponentFactory
 private:
 	/* data */
 public:
-	OpponentFactory();
+	OpponentFactory(); //Default constructor
 	~OpponentFactory();
+
+	//Method using Unique ptr (smartpointer)
 	static std::unique_ptr<Opponent> get_opponent(int i);
 };
 
@@ -25,7 +27,7 @@ OpponentFactory::~OpponentFactory()
 {
 }
 
-std::unique_ptr<Opponent> OpponentFactory::get_opponent(int i)
+std::unique_ptr<Opponent> OpponentFactory::get_opponent(int i) 
 {
 	switch (i)
 	{

@@ -54,12 +54,12 @@ HP Humanoid::getHealth()
 
 ATT Humanoid::getAttack()
 {
-    return attack_;
+    return (attack_ + weapon_.getValue());
 }
 
 DEF Humanoid::getDefence()
 {
-    return defence_;
+    return (defence_ + armour_.getValue());
 }
 
 Gear<ATT> Humanoid::getWeapon()
