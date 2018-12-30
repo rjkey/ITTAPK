@@ -1,30 +1,34 @@
 
 
-
-
-
-#include <iostream>
-using namespace std;
-
-
-// protectiong cout, and defening events
-void test(const char inp)
-{
-  cout << inp;
-}//*/
-
-
+#include <time.h>
+#include "Location.hpp"
+#include "PathOfDestiny.hpp"
+//#include "Arena.hpp"
+//#include "Path.hpp"
 
 
 int main()
 {
-  const char arr[] = {'t', 'e', 's', 't', '\n'};
+   
 
-  for(int i=0; i<5; i++) {
-    test(arr[i]);
-  }
-
-  //cout << "hello world" << endl;
   
-  return 0;
+    // Init rand to be more random. 
+    srand (time(NULL));
+
+    PathOfDestiny game = PathOfDestiny();
+    cout << "Game start: \n"; 
+
+
+    for(size_t i = 0; i < 10; i++)
+    {
+        //game.movement();
+        game.gameLogic();
+    }
+    //*/
+   
+  
+ 
+
+    return 0;
 }
+
