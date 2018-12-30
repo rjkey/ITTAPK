@@ -20,6 +20,8 @@ public:
     Gear<ATT> getWeapon() override;
     Gear<DEF> getArmour() override;
 
+    void setHealth(HP) override;
+
 	void showStats() override;
     friend std::ostream& operator<<(std::ostream& os, const Humanoid& H_Obj);
 };
@@ -70,6 +72,11 @@ Gear<ATT> Humanoid::getWeapon()
 Gear<DEF> Humanoid::getArmour()
 {
     return armour_;
+}
+
+void Humanoid::setHealth(HP health)
+{
+    health_ = health;
 }
 
 void Humanoid::showStats()

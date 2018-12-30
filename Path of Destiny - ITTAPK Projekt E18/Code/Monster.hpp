@@ -19,6 +19,8 @@ public:
     Gear<ATT> getWeapon() override;
     Gear<DEF> getArmour() override;
 
+    void setHealth(HP) override;
+
 	void showStats() override;
     friend std::ostream& operator<<(std::ostream& os, const Monster& M_Obj);
 };
@@ -64,6 +66,11 @@ Gear<ATT> Monster::getWeapon()
 Gear<DEF> Monster::getArmour()
 {
     return armour_;
+}
+
+void Monster::setHealth(HP health)
+{
+    health_ = health;
 }
 
 void Monster::showStats()

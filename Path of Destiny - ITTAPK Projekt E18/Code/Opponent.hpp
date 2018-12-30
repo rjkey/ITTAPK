@@ -31,6 +31,8 @@ public:
 	virtual Gear<ATT> getWeapon() = 0;
 	virtual Gear<DEF> getArmour() = 0;
 
+	virtual void setHealth(HP) = 0;
+
 	virtual void showStats() = 0;
 };
 
