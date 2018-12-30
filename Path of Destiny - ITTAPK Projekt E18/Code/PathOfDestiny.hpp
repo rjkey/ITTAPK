@@ -1,3 +1,5 @@
+
+
 #include "Hero.hpp"
 #include "CosTypes.hpp"
 #include<list>
@@ -9,22 +11,10 @@
 #include <functional> 
 
 
-struct Dummy1
-{
-    
-};
-
-struct Dummy2
-{
-    /* data */
-};
-
-
-
 // the variant to visit
 using var_t = std::variant<Arena<DEF>,Arena<ATT>,Path>;
 // helper type for the visitor #3
-//template<class T> struct always_false : std::false_type {};
+template<class T> struct always_false : std::false_type {};
 
 
 namespace action
@@ -72,8 +62,7 @@ void PathOfDestiny::gameLogic()
     auto combatDEF = std::bind(static_cast<void(*)(Arena<DEF>, Hero)>(action::combat),std::placeholders::_1, hero_);
     // kan gribes med [&] [this] 
     auto combatATT = [&hero = this->hero_](Arena<ATT> arena){action::combat(arena, hero);};
-
-    uint locationType; // 0 = Arena with DEF, 1 = Arena with ATT, 2= Path
+    bool combatDone = false;
         
         // present location 
     // currentLocation_.show(); // use a visitor
@@ -97,24 +86,32 @@ void PathOfDestiny::gameLogic()
     //var_t w = std::visit([](auto&& arg) -> var_t {return arg;}, currentLocation_);
 
     // 3. type-matching visitor: a lambda that handles each type differently
-    std::cout << "Visiting currentLocation";
-    std::visit([&combatDEF, &combatATT](auto&& arg) {
+    //std::cout << "Visiting currentLocation \n";
+    combatDone = std::visit([&combatDEF, &combatATT](auto&& arg) -> bool {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, Arena<DEF>>){
             std::cout << "Arena DEF with value " << arg.getCombatModifier() << '\n';
             combatDEF(arg);
+            return true;
         }
         else if constexpr (std::is_same_v<T, Arena<ATT>>){
             std::cout << "Arena ATT with value " << arg.getCombatModifier() << '\n';
             combatATT(arg);
+            return true;
         }
         else if constexpr (std::is_same_v<T, Path>){
             std::cout << "PATH with directions " << arg.getDirectionsToGo() << '\n';
+            return false;
         }
         else 
-            static_assert(always_false<T>::value, "non-exhaustive visitor!");
+            static_assert(always_false<T>::value, "non-exhaustive visitor!\n");
     }, currentLocation_);
 
+    // Need a Path after combat to move on. 
+    if (combatDone) {
+        currentLocation_= locationFactory_.createPath();
+    }
+    
     movement();
     
 
@@ -218,7 +215,7 @@ void PathOfDestiny::movement()
 
 
         // 0 for Arena else Path
-        if((rand() % 2)<1) {
+        if((rand() % 3)<2) {
             int value = rand() % 21 -10; // combatModifier between -10,10 
             // If negative it a DEF modifier
             if (value<1) {
@@ -240,9 +237,9 @@ void PathOfDestiny::movement()
 } // Working movement
 
 void action::combat(Arena<DEF> arena, Hero hero){
-    cout << "Entered DEF combat with Hero: "  << "in the arena " << arena;
+    cout << "Entered DEF combat with Hero: " << hero << "in the arena " << arena << std::endl;
 }
 
 void action::combat(Arena<ATT> arena, Hero hero){
-    cout << "Entered ATT combat with Hero: " << "in the arena " << arena;
+    cout << "Entered ATT combat with Hero: " << hero << "in the arena " << arena << std::endl;
 }
