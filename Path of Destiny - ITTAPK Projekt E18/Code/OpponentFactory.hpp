@@ -16,7 +16,7 @@ public:
 	~OpponentFactory();
 
 	//Method using Unique ptr (smartpointer)
-	static std::unique_ptr<Opponent> get_opponent(int i);
+	static std::unique_ptr<Opponent> getOpponent(int i);
 };
 
 OpponentFactory::OpponentFactory()
@@ -27,7 +27,7 @@ OpponentFactory::~OpponentFactory()
 {
 }
 
-std::unique_ptr<Opponent> OpponentFactory::get_opponent(int i) 
+std::unique_ptr<Opponent> OpponentFactory::getOpponent(int i) 
 {
 	switch (i)
 	{
