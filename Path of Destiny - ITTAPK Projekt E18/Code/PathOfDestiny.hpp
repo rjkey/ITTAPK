@@ -77,12 +77,12 @@ void PathOfDestiny::gameLogic()
         if constexpr (std::is_same_v<T, Arena<DEF>>){
             std::cout << "Arena DEF with value " << arg.getCombatModifier() << '\n';
             
-            combatDEF(arg,enemyFactory.get_opponent());
+            combatDEF(arg,enemyFactory.getOpponent());
             return true;
         }
         else if constexpr (std::is_same_v<T, Arena<ATT>>){
             std::cout << "Arena ATT with value " << arg.getCombatModifier() << '\n';
-            combatATT(arg,enemyFactory.get_opponent());
+            combatATT(arg,enemyFactory.getOpponent());
             return true;
         }
         else if constexpr (std::is_same_v<T, Path>){
