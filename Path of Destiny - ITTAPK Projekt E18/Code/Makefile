@@ -1,5 +1,5 @@
 #define exec name
-EXEC=prog
+EXEC=prog.exe
 #define compiler flags
 #-std=c++1z			Use c++17 compiler
 #-Wall & -Werror	Make warnings into compile errors (unused variable ect..)
