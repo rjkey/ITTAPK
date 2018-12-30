@@ -183,31 +183,41 @@ public:
 
 
   //////////////////// Overloads ////////////////////
-  // Rule of 5: + Ostream
+  /*/ Rule of 5: + Ostream
   ~SafeType(){} // Destructor
 
   SafeType(const SafeType& other) { // copy constructor
     value_ = other.value_;
   }
-  /*
-  SafeType(SafeType&& other) noexcept // move constructor
-    : value_(std::exchange(other.value_, NULL))
-  {}
-  */
-  SafeType(SafeType&& other) noexcept // move constructor
-    : value_(std::move(other.value_))
-  {}
 
   SafeType& operator=(const SafeType& other) { // copy assignment
         return *this = SafeType(other);
   }
 
+  //SafeType(SafeType&& other) noexcept // move constructor
+  //  : value_(std::exchange(other.value_, NULL))
+  //{}
+
+  SafeType(SafeType&& other) noexcept // move constructor
+    : value_(std::move(other.value_))
+  {}
+
   SafeType& operator=(SafeType&& other) noexcept { // move assignment
-      std::swap(value_, other.value_);
+      //std::swap(value_, other.value_);
       return *this;
   }//*/
+
+  //
+  SafeType(const SafeType&) = default;              // Copy constructor
+  SafeType(SafeType&&) = default;                   // Move constructor
+  SafeType& operator=(const SafeType&) = default;   // Copy assignment operator
+  SafeType& operator=(SafeType&&) = default;        // Move assignment operator
+  virtual ~SafeType() { }                           // Destructor//*/
+
   //////////////////// Overloads end ////////////////////
-    
+  
+
+
 private:
   T value_;
 };

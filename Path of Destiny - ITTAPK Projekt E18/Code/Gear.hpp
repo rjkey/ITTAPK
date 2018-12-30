@@ -13,9 +13,13 @@ class Gear
 {
 	static_assert(std::is_same<T, ATT>::value || std::is_same<T, DEF>::value, "GEAR: invalid type");
 public:
+	// Constructors
 	Gear();
 	explicit Gear(T att_def);
+	explicit Gear (std::string name, T att_def);
 	~Gear();
+
+	// Overloads
 	Gear(const Gear& other);
 	Gear(Gear&& other) noexcept;
 	Gear& operator=(const Gear& other);
@@ -24,14 +28,51 @@ public:
 	{
 		return os << G_Obj.name_ << " (" << G_Obj.weapon_amour_ << ")";
 	}
-	T getGearValue();
+
+	// Logic operations
+	template<class Rhs, std::enable_if_t<!std::is_same<Rhs, Gear>{},int> =0 >
+	friend bool operator==(Rhs const& ptr, Gear) {
+	return !*ptr;
+	}
+
+	template<class Rhs, std::enable_if_t<!std::is_same<Rhs, Gear>{},int> =0 >
+	friend bool operator!=(Rhs const& ptr, Gear) {
+	return !(ptr==Gear{});
+	}
+
+	template<class Lhs, std::enable_if_t<!std::is_same<Lhs, Gear>{},int> =0 >
+	friend bool operator==(Gear, Lhs const& ptr) {
+	return !*ptr;
+	}
+
+	template<class Lhs, std::enable_if_t<!std::is_same<Lhs, Gear>{},int> =0 >
+	friend bool operator!=(Gear, Lhs const& ptr) {
+	return !(Gear{}==ptr);
+	}
+
+	friend bool operator==(Gear, Gear) {
+	return true;
+	}
+
+	friend bool operator!=(Gear, Gear) {
+	return false;
+	}//*/
+
+
+	// Functions
+	T getValue() const;
 	void printGear();
+
 private:
 	T weapon_amour_;
 	std::string name_;
 	static size_t random_number();
 };
 
+
+
+
+// Constructors
 template <typename T>
 Gear<T>::Gear()
 {
@@ -51,10 +92,17 @@ Gear<T>::Gear(T att_def)
 }
 
 template <typename T>
+Gear<T>::Gear (std::string name, T att_def){
+		weapon_amour_ = att_def;
+		name_ = name;
+	}
+
+template <typename T>
 Gear<T>::~Gear()
 {
 }
 
+// Overloads
 template <typename T>
 Gear<T>::Gear(const Gear& other)
 {
@@ -83,6 +131,9 @@ Gear<T>& Gear<T>::operator=(Gear&& other) noexcept
 	return *this;
 }
 
+
+
+// Functions
 template <typename T>
 void Gear<T>::printGear()
 {
@@ -90,7 +141,7 @@ void Gear<T>::printGear()
 }
 
 template <typename T>
-T Gear<T>::getGearValue()
+T Gear<T>::getValue() const
 {
 	return weapon_amour_;
 }
