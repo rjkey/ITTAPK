@@ -4,11 +4,9 @@
 #include <string>
 #include <iostream>
 
-using namespace std; 
 
 
-
-static string DirectionsStrings[] = {"continue ahead or turn left", "continue ahead or turn right", "turn left or right", "continue ahead or turn left or right"};
+static std::string DirectionsStrings[] = {"continue ahead or turn left", "continue ahead or turn right", "turn left or right", "continue ahead or turn left or right"};
 
 
 enum Directions
@@ -23,29 +21,29 @@ enum Directions
 class Path
 {
 private:
-    string areaName_; 
-    string DirectionsToGo_;
+    std::string areaName_; 
+    std::string DirectionsToGo_;
     int directions__;
 
 
 
 public:
-    Path(string name, uint directions);
+    Path(std::string name, uint directions);
     Path();
     ~Path();
     void setDirectionsToGo(uint directions);
-    string getDirectionsToGo();
+    std::string getDirectionsToGo();
     void show();
     int getValue();
 
-friend ostream& operator<< (ostream& os, const Path& path)
+friend std::ostream& operator<< (std::ostream& os, const Path& path)
  {
      return os << " you have entered " << path.areaName_ << " you can go"<< path.DirectionsToGo_ ; //<< std::endl;  
  }
 
 };
 
-Path::Path(string name, uint directions)
+Path::Path(std::string name, uint directions)
 :areaName_(name), directions__(directions)
 {
     setDirectionsToGo(directions);
@@ -74,7 +72,7 @@ void Path::setDirectionsToGo(uint directions)
     }
 }
 
-string Path::getDirectionsToGo()
+std::string Path::getDirectionsToGo()
 {
     return DirectionsToGo_;
 }
@@ -82,7 +80,7 @@ string Path::getDirectionsToGo()
 
 void Path::show()
 {
-    cout<< "entered " << areaName_ << " you can "<<  DirectionsToGo_<< endl;
+    std::cout<< "entered " << areaName_ << " you can "<<  DirectionsToGo_<< std::endl;
 
 }
 

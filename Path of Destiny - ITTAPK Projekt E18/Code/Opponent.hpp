@@ -23,7 +23,7 @@ protected:
 
 public:	
 	virtual ~Opponent() = default;
-	virtual std::string getName() = 0;
+	virtual std::string getName() = 0; 
 	virtual HP getHealth() = 0;
 	virtual ATT getAttack() = 0;
 	virtual DEF getDefence() = 0;
@@ -34,6 +34,7 @@ public:
 	virtual void setHealth(HP) = 0;
 
 	virtual void showStats() = 0;
+	virtual void show()  = 0;
 };
 
 #endif // OPPONENT_H

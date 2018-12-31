@@ -23,12 +23,13 @@ public:
     void setHealth(HP) override;
 
 	void showStats() override;
+    void show() override;
     friend std::ostream& operator<<(std::ostream& os, const Humanoid& H_Obj);
 };
 
 Humanoid::Humanoid()
 {
-    srand (time(0)); //seed the rand for random numbers
+    //srand (time(0)); //seed the rand for random numbers
     name_ = list_of_humanoids[rand() % (NUMBER_OF_OPPONENT_TYPES - 1) + 0];
     health_ = rand() % MAX_HP + 1;
     attack_ = rand() % MAX_ATT + 1;
@@ -81,14 +82,20 @@ void Humanoid::setHealth(HP health)
 
 void Humanoid::showStats()
 {
+    std::cout << "Enemy stats: "<< name_ << "\nHP: " << health_ << "\t Attack: "<< attack_ << "\tDefence: " << defence_ << std::endl;
+}
+
+void Humanoid::show()
+{
     std::cout << *this << std::endl;
-    weapon_.printGear();
-    armour_.printGear();
+    
 }
 
 std::ostream& operator<<(std::ostream& os, const Humanoid &H_Obj)
 {
-    return os << H_Obj.name_ << " (" << " Health: " << H_Obj.health_ << " Attack: " << H_Obj.attack_ << " Defence: " << H_Obj.defence_ << ")";
+
+    return os <<"Enemy: "<< H_Obj.name_ << "\nHealth: " << H_Obj.health_ << "\t Attack: " << H_Obj.attack_ << "\tDefence: " << H_Obj.defence_ 
+    <<"\nWeapon: "<< H_Obj.weapon_<< "Armour: " << H_Obj.armour_<<"\n";
 }
 
 #endif // HUMANOID_H

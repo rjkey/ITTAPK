@@ -6,23 +6,21 @@
 #include<iostream>
 #include"CosTypes.hpp"
 
-using namespace std;
-
 
 template<typename T>
 class Arena 
 {
 private:
-    string areaName_;
+    std::string areaName_;
     T combatmodifier_; 
 public:
-    Arena(string name, T combatmod );
+    Arena(std::string name, T combatmod );
     Arena();
     ~Arena();
     T getCombatModifier();
     void show() const ;
 
- friend ostream& operator<< (ostream& os, const Arena& arena)
+ friend std::ostream& operator<< (std::ostream& os, const Arena& arena)
  {
      return os << "you have entered " << arena.areaName_ << " affecting your attack with "<< arena.combatmodifier_;// << std::endl;  
      //(arena.combatmodifier_<0? " lowering " : " adding ") << 
@@ -30,7 +28,7 @@ public:
 };
 
 template<typename T>
-Arena<T>::Arena(string name, T combatmod)
+Arena<T>::Arena(std::string name, T combatmod)
     :areaName_(name),combatmodifier_(combatmod)
 {
 }
@@ -56,7 +54,7 @@ T Arena<T>::getCombatModifier()
 template<typename T>
 void Arena<T>::show() const{
 
-cout << "you have entered " << areaName_ << " affecting your attack with "<< combatmodifier_ << std::endl;  
+std::cout << "you have entered " << areaName_ << " affecting your attack with "<< combatmodifier_ << std::endl;  
      //(arena.combatmodifier_<0? " lowering " : " adding ") << 
 }
 

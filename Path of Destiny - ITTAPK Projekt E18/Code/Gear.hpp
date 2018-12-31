@@ -149,7 +149,7 @@ T Gear<T>::getValue() const
 template <typename T>
 size_t Gear<T>::random_number()
 {
-	srand (time(0));
+	//srand (time(0)); // placed in main 
 	return rand() % (MAX - 1) + 0;
 }
 

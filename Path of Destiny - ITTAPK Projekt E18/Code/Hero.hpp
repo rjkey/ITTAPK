@@ -6,7 +6,6 @@
 #include"Gear.hpp"
 
 #include<string>
-using namespace std;
 #include<list>
 #include <variant>
 #include <utility>  // for exchange(); -see overloads
@@ -17,13 +16,14 @@ class Hero
 {    
 public:
     Hero();
-    Hero(string name, HP health, ATT attack, DEF defence);
+    Hero(std::string name, HP health, ATT attack, DEF defence);
     ~Hero();
 
 
     HP getHealth() const;
     ATT getAttack() const;
     DEF getDefence() const;
+    std::string getName() const;
 
     void setHealth(HP);
     void setAttack(ATT);
@@ -39,7 +39,7 @@ public:
 
     void show();
     void showStats();
-    void showInventory();
+    bool showInventory();
 
 //////////////////// Overloads ////////////////////
     // Rule of 5: + Ostream (destructor above)
@@ -86,14 +86,14 @@ public:
     << "Weapon : " << H_Obj.weapon_ << "\n\rAmour  : " << H_Obj.armour_ << endl;//*/
 
     // All GetFunctions() must be const for this to work
-    return os << "Hero: " << H_Obj.heroName_ << "\n\rHP: "
+    return os << "Hero: " << H_Obj.heroName_ << "\n\rHealth: "
     << H_Obj.getHealth() << "\t  Attack: " << H_Obj.getAttack() << "\tDefence: " << H_Obj.getDefence() << "\n\r"
     << "Weapon : " << H_Obj.weapon_ << "\n\rAmour  : " << H_Obj.armour_ << "\n\r";//*/
     }
 
 //////////////////// Menbers_ ////////////////////
 private:
-    string heroName_;
+    std::string heroName_;
     HP health_;
     ATT attack_;
     DEF defence_;
@@ -118,7 +118,7 @@ Hero::Hero(){
     defence_ = 0;
 }
 
-Hero::Hero(string name, HP health, ATT attack, DEF defence){
+Hero::Hero(std::string name, HP health, ATT attack, DEF defence){
     heroName_ = name;
     setHealth(health);
     setAttack(attack);
@@ -145,7 +145,9 @@ ATT Hero::getAttack() const {
 DEF Hero::getDefence() const {
     return (defence_ + armour_.getValue()); //returns total defence
 }
-
+std::string Hero::getName() const{
+    return heroName_;
+}
 
 void Hero::setHealth(HP health){
     health_ = health;
@@ -179,7 +181,7 @@ void Hero::setGear(GearVariant VarGear){
         //std::cout << "Change armour to: "<< armour_ << "\n\r";
     }
     else {
-        cout << "ERROR: File: Hero.hpp, Function: setGear()\n\r";
+        std::cout << "ERROR: File: Hero.hpp, Function: setGear()\n\r";
     }//*/
     
     /*
@@ -217,7 +219,7 @@ void Hero::changeGear(uint i){
         std::cout << "\n\r";
     }
     else{
-        cout << "False input\n\r";
+        std::cout << "False input\n\r";
     }
 }
 
@@ -249,7 +251,7 @@ void Hero::dropGear(uint i) {
         inventoryList_.erase(it);
     }
     else{
-        cout << "False input\n\r";
+        std::cout << "False input\n\r";
     }
 }
 
@@ -271,13 +273,14 @@ void Hero::show(){
 
 void Hero::showStats(){
     // with Safetype Ostream overload
-    cout << "Hero stats: " << heroName_ << "\n\rHP: " << health_ << "\t  Attack: " << attack_ << "\tDefence: " << defence_ << endl;
+    std::cout << "Hero stats: " << heroName_ << "\n\rHP: " << health_ << "\t  Attack: " << attack_ << "\tDefence: " << defence_ << std::endl;
 }
 
-void Hero::showInventory(){
+bool Hero::showInventory(){
     std::cout << "Inventory: ";
     if (inventoryList_.size() == 0 ) {
-        std::cout << "Empty";
+        std::cout << "Empty\n\r";
+        return false;
     }
     else{
         std::cout << "\n\r";
@@ -295,8 +298,11 @@ void Hero::showInventory(){
             // Visit access Variant = Gear Object, we use Lambda to call the specific printfunction for the object! 
             //std::visit([](auto&& gear_obj){gear_obj.printGear();}, *it);
         }
+        std::cout << "\n\r";
+        return true;
     }
-    std::cout << "\n\r";
+ 
+
 }
 
 

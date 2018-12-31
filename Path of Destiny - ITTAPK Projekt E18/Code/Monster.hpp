@@ -22,6 +22,7 @@ public:
     void setHealth(HP) override;
 
 	void showStats() override;
+    void show() override;
     friend std::ostream& operator<<(std::ostream& os, const Monster& M_Obj);
 };
 
@@ -75,12 +76,17 @@ void Monster::setHealth(HP health)
 
 void Monster::showStats()
 {
-    std::cout << *this << std::endl;
+    std::cout << *this ;
+}
+
+void Monster::show()
+{
+    std::cout << *this ;
 }
 
 std::ostream& operator<<(std::ostream& os, const Monster &M_Obj)
 {
-    return os << M_Obj.name_ << " (" << " Health: " << M_Obj.health_ << " Attack: " << M_Obj.attack_ << " Defence: " << M_Obj.defence_ << ")";
+    return os <<"Enemy: "<< M_Obj.name_ << " \nHealth: " << M_Obj.health_ << "\t Attack: " << M_Obj.attack_ << "\tDefence: " << M_Obj.defence_ << "\n";
 }
 
 #endif // MONSTER_H
