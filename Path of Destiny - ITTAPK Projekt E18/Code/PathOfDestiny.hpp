@@ -2,10 +2,8 @@
 #define PATHOFDESTINY_HPP
 
 #include "Hero.hpp"
-//#include "CosTypes.hpp"
 #include "Location.hpp"
 #include "OpponentFactory.hpp"
-#include <list>
 #include <variant>
 #include <assert.h>
 #include <functional> 
@@ -38,6 +36,7 @@ private:
 
 public:
     PathOfDestiny();
+    PathOfDestiny(Hero hero);
 
     ~PathOfDestiny();
     void gameLogic();
@@ -46,8 +45,18 @@ public:
     // combat skal være overlaod. viriadic er mere til recursiv kald af function.
     
 };
-
 PathOfDestiny::PathOfDestiny()
+{
+    locationFactory_ = LocationFactory();
+    opponentFactory_ = OpponentFactory();
+   // Hero hero;
+   // hero_ = hero;
+    // start with a random path. 
+    currentLocation_ = locationFactory_.createPath();
+}
+
+PathOfDestiny::PathOfDestiny(Hero hero)
+: hero_(hero)
 {
     locationFactory_ = LocationFactory();
     opponentFactory_ = OpponentFactory();
@@ -107,10 +116,23 @@ void PathOfDestiny::gameLogic()
 void PathOfDestiny::movement()
 {
 
-    // Chris Debugging   Not working
+    // Chris Debugging   
     char input; 
     int ways;
     bool validInput = false;
+
+    std::cout << "Want to change gear? y/n"; 
+    std::cin >> input;
+    
+    if (input=='y') {
+        int item;
+        if (hero_.showInventory()) {
+            std::cout << "Choose item number to use: ";
+            std::cin >> item;
+            hero_.changeGear(item);
+        }       
+    }
+    
     // 2. value-returning visitor, demonstrates the idiom of returning another variant
     //var_t w = std::visit([](auto&& arg) -> var_t {return arg;}, currentLocation_);
 
@@ -125,29 +147,29 @@ void PathOfDestiny::movement()
         {
             // must be assert since input is decided runtime, if not Path = plz fail!
             assert(true);
-            cout << "ERROR PathOfDestiny::movement - Not Path in currentlocation!\n";
+            std::cout << "ERROR PathOfDestiny::movement - Not Path in currentlocation!\n";
             return 0;
         }
     }, currentLocation_);
     
 
     do{
-        cout<< "Choose the path to follow, using first letter in the posible ways: " ; 
-        cin >> input;
+        std::cout<< "Choose the path to follow, using first letter in the posible ways: " ; 
+        std::cin >> input;
         if (ways == 0) {
             
             switch (input)
             {
                 case 'l':
-                    cout << "moving Left" << endl;
+                    std::cout << "moving Left" << std::endl;
                     validInput = true;
                     break;
                 case 'a':
-                    cout << "moving forward"<< endl;
+                    std::cout << "moving forward"<< std::endl;
                     validInput = true;
                     break;
                 default:
-                    cout << "invalid input, try again"<< endl;
+                    std::cout << "invalid input, try again"<< std::endl;
                     break;
             }
         }
@@ -155,15 +177,15 @@ void PathOfDestiny::movement()
             switch (input)
             {
                 case 'r':
-                    cout << "moving right"<< endl;
+                    std::cout << "moving right"<< std::endl;
                     validInput = true;
                     break;
                 case 'a':
-                    cout << "moving forward"<< endl;
+                    std::cout << "moving forward"<< std::endl;
                     validInput = true;
                     break;
                 default:
-                    cout << "invalid input, try again"<< endl;
+                    std::cout << "invalid input, try again"<< std::endl;
                     break;
             }
         }
@@ -171,15 +193,15 @@ void PathOfDestiny::movement()
             switch (input)
             {
                 case 'l':
-                    cout << "moving Left"<< endl;
+                    std::cout << "moving Left"<< std::endl;
                     validInput = true;
                     break;
                 case 'r':
-                    cout << "moving right"<< endl;
+                    std::cout << "moving right"<< std::endl;
                     validInput = true;
                     break;
                 default:
-                    cout << "invalid input, try again"<< endl;
+                    std::cout << "invalid input, try again"<< std::endl;
                     break;
             }
         }
@@ -187,19 +209,19 @@ void PathOfDestiny::movement()
             switch (input)
             {
                 case 'l':
-                    cout << "moving Left "<< endl;
+                    std::cout << "moving Left "<< std::endl;
                     validInput = true;
                     break;
                 case 'r':
-                    cout << "moving right "<< endl;
+                    std::cout << "moving right "<< std::endl;
                     validInput = true;
                     break;
                 case 'a':
-                    cout << "moving forward "<< endl;
+                    std::cout << "moving forward "<< std::endl;
                     validInput = true;
                     break;
                 default:
-                    cout << "invalid input, try again"<< endl;
+                    std::cout << "invalid input, try again"<< std::endl;
                     break;
             }
         }   
@@ -230,28 +252,95 @@ void PathOfDestiny::movement()
 } // Working movement
 
 void action::combat(Arena<DEF> arena, std::unique_ptr<Opponent> enemy, Hero hero){
+    
     DEF dmg; 
+    int i = 0;
     std::cout << "You encountered a" << enemy->getName() << "!\n\r";
-    hero.showStats();
-    enemy->showStats();
+    hero.show();
+    enemy->show();
 
     do{
-         // enemy attacks hero. 
-        dmg =  hero.getDefence() - enemy->getAttack();
+        // enemy attacks hero. 
+        dmg =  hero.getDefence() + arena.getCombatModifier() - enemy->getAttack();
         if ( dmg < (DEF) 0) {
             hero.setHealth(hero.getHealth() + dmg);
         }
+        // hero attacks enemy.
         dmg = enemy->getDefence() - hero.getAttack();
-
-
+        if ( dmg < (DEF) 0) {
+            enemy->setHealth(enemy->getHealth() + dmg);
+        }
+        std::cout <<"#"<< ++i <<" "<< hero.getName()<< " Health: " << hero.getHealth() <<" "<< enemy->getName() << " Health: "<< enemy->getHealth()<< std::endl; 
     }while( hero.getHealth() < 1 || enemy->getHealth() < 1 );
+
+    
+    if (hero.getHealth()<1) {
+        std::cout<< "The "<< enemy->getName()<< " killed you\n !!! GAME OVER !!!" ;
+        exit(0);
+    }
+    
+    // Dropped gear from monster 
+    int value = rand() % 21 -10; // combatModifier between -10,10 
+    // If negative it an armour
+    if (value<1) {
+        DEF v = (DEF) abs(value);
+        Gear<DEF> newGear = Gear(v);
+        std::cout << "You killed the "<< enemy->getName()<< " and found a " << newGear << " and puts it into your inventory\n";
+        hero.addGearToInventory(newGear);
+    }
+    else // If positive a weapon
+    {
+        ATT v = value;
+        Gear<ATT> newGear = Gear(v);
+        std::cout << "You killed the "<< enemy->getName()<< " and found a " << newGear << " and puts it into your inventory\n";
+        hero.addGearToInventory(newGear);
+    }        
 }
 
 
 
 
 void action::combat(Arena<ATT> arena, std::unique_ptr<Opponent> enemy , Hero hero){
-    cout << "Entered ATT combat with Hero: " << hero << "in the arena " << arena << std::endl;
+   DEF dmg; 
+    int i = 0;
+    std::cout << "You encountered a" << enemy->getName() << "!\n\r";
+    hero.show();
+    enemy->show();
+    do{
+        // enemy attacks hero. 
+        dmg =  hero.getDefence() - enemy->getAttack();
+        if ( dmg < (DEF) 0) {
+            hero.setHealth(hero.getHealth() + dmg);
+        }
+        // hero attacks enemy.
+        dmg = enemy->getDefence() - (hero.getAttack() + arena.getCombatModifier());
+        if ( dmg < (DEF) 0) {
+            enemy->setHealth(enemy->getHealth() + dmg);
+        }
+        std::cout << ++i << hero.getName()<< " Health: " << hero.getHealth() <<" "<< enemy->getName() << " Health: "<< enemy->getHealth()<< std::endl; 
+    }while( hero.getHealth() < 1 || enemy->getHealth() < 1 );
+
+    if (hero.getHealth()<1) {
+        std::cout<< "The "<< enemy->getName()<< " killed you\n !!! GAME OVER !!!\n\n" ;
+        exit(0);
+    }
+    
+    // Dropped gear from monster 
+    int value = rand() % 21 -10; // combatModifier between -10,10 
+    // If negative it an armour
+    if (value<1) {
+        DEF v = abs(value);
+        Gear<DEF> newGear = Gear(v);
+        std::cout << "You found a " << newGear << " and puts it into your inventory";
+        hero.addGearToInventory(newGear);
+    }
+    else // If positive a weapon
+    {
+        ATT v = value;
+        Gear<ATT> newGear = Gear(v);
+        std::cout << "You found a " << newGear << " and puts it into your inventory";
+        hero.addGearToInventory(newGear);
+    }         
 }
 
 #endif // PATHOFDESTINY_HPP
