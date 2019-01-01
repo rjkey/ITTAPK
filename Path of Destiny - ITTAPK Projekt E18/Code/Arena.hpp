@@ -22,8 +22,8 @@ public:
 
  friend std::ostream& operator<< (std::ostream& os, const Arena& arena)
  {
-     return os << "you have entered " << arena.areaName_ << " affecting your attack with "<< arena.combatmodifier_;// << std::endl;  
-     //(arena.combatmodifier_<0? " lowering " : " adding ") << 
+ std::cout << "you have entered " << arena.areaName_ << " affecting your stats with "<< arena.combatmodifier_ << std::endl; 
+ return os;
  }
 };
 
@@ -54,8 +54,7 @@ T Arena<T>::getCombatModifier()
 template<typename T>
 void Arena<T>::show() const{
 
-std::cout << "you have entered " << areaName_ << " affecting your attack with "<< combatmodifier_ << std::endl;  
-     //(arena.combatmodifier_<0? " lowering " : " adding ") << 
+std::cout << "you have entered " << areaName_ << " affecting your stats with "<< combatmodifier_ << std::endl; 
 }
 
 

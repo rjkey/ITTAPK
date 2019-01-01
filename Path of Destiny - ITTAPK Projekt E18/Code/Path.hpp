@@ -26,7 +26,6 @@ private:
     int directions__;
 
 
-
 public:
     Path(std::string name, uint directions);
     Path();
@@ -38,7 +37,7 @@ public:
 
 friend std::ostream& operator<< (std::ostream& os, const Path& path)
  {
-     return os << " you have entered " << path.areaName_ << " you can go"<< path.DirectionsToGo_ ; //<< std::endl;  
+     return os << "you have entered " << path.areaName_ << " you can "<< path.DirectionsToGo_ ;
  }
 
 };
@@ -80,7 +79,7 @@ std::string Path::getDirectionsToGo()
 
 void Path::show()
 {
-    std::cout<< "entered " << areaName_ << " you can "<<  DirectionsToGo_<< std::endl;
+    std::cout<< "you have entered " << areaName_ << " you can "<<  DirectionsToGo_<< std::endl;
 
 }
 
