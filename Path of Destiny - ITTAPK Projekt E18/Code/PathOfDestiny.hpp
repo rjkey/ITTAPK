@@ -17,8 +17,8 @@ template<class T> struct always_false : std::false_type {};
 
 namespace action
 {
-    void combat(Arena<DEF> Arena, std::unique_ptr<Opponent> enemy, Hero hero);
-    void combat(Arena<ATT> Arena, std::unique_ptr<Opponent> enemy, Hero hero);
+    void combat(Arena<DEF> Arena, std::unique_ptr<Opponent> enemy, Hero& hero);
+    void combat(Arena<ATT> Arena, std::unique_ptr<Opponent> enemy, Hero& hero);
 } // action
 
 
@@ -49,8 +49,6 @@ PathOfDestiny::PathOfDestiny()
 {
     locationFactory_ = LocationFactory();
     opponentFactory_ = OpponentFactory();
-   // Hero hero;
-   // hero_ = hero;
     // start with a random path. 
     currentLocation_ = locationFactory_.createPath();
 }
@@ -70,7 +68,7 @@ PathOfDestiny::~PathOfDestiny()
 
 void PathOfDestiny::gameLogic()
 {   
-    auto combatDEF = std::bind(static_cast<void(*)(Arena<DEF>, std::unique_ptr<Opponent>, Hero)>(action::combat),std::placeholders::_1, std::placeholders::_2, hero_);
+    auto combatDEF = std::bind(static_cast<void(*)(Arena<DEF>, std::unique_ptr<Opponent>, Hero&)>(action::combat),std::placeholders::_1, std::placeholders::_2, hero_);
     // kan gribes med [&] [this] 
     auto combatATT = [&hero = this->hero_](Arena<ATT> arena, std::unique_ptr<Opponent> enemy){action::combat(arena, std::move(enemy), hero);};
     bool combatDone = false;
@@ -84,18 +82,17 @@ void PathOfDestiny::gameLogic()
     combatDone = std::visit([&combatDEF, &combatATT, &enemyFactory = this->opponentFactory_](auto&& arg) -> bool {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, Arena<DEF>>){
-            std::cout << "Arena DEF with value " << arg.getCombatModifier() << '\n';
-            
+            std::cout << arg << '\n';
             combatDEF(arg,enemyFactory.getOpponent());
             return true;
         }
         else if constexpr (std::is_same_v<T, Arena<ATT>>){
-            std::cout << "Arena ATT with value " << arg.getCombatModifier() << '\n';
+            std::cout << arg << '\n';
             combatATT(arg,enemyFactory.getOpponent());
             return true;
         }
         else if constexpr (std::is_same_v<T, Path>){
-            std::cout << "PATH with directions " << arg.getDirectionsToGo() << '\n';
+            //std::cout << arg << '\n';
             return false;
         }
         else 
@@ -121,7 +118,7 @@ void PathOfDestiny::movement()
     int ways;
     bool validInput = false;
 
-    std::cout << "Want to change gear? y/n"; 
+    std::cout << "Want to change gear? y/n  "; 
     std::cin >> input;
     
     if (input=='y') {
@@ -229,7 +226,7 @@ void PathOfDestiny::movement()
     //*/ 
 
 
-        // 0 for Arena else Path
+        // 0 or 1 for Arena else Path
         if((rand() % 3)<2) {
             int value = rand() % 21 -10; // combatModifier between -10,10 
             // If negative it a DEF modifier
@@ -251,27 +248,29 @@ void PathOfDestiny::movement()
        //*/
 } // Working movement
 
-void action::combat(Arena<DEF> arena, std::unique_ptr<Opponent> enemy, Hero hero){
+void action::combat(Arena<DEF> arena, std::unique_ptr<Opponent> enemy, Hero& hero){
     
     DEF dmg; 
     int i = 0;
-    std::cout << "You encountered a" << enemy->getName() << "!\n\r";
+    std::cout << "You encountered a " << enemy->getName() << "!\n\r";
     hero.show();
     enemy->show();
 
     do{
         // enemy attacks hero. 
         dmg =  hero.getDefence() + arena.getCombatModifier() - enemy->getAttack();
+        std::cout << "dmg to hero is: " << dmg<< std::endl; 
         if ( dmg < (DEF) 0) {
-            hero.setHealth(hero.getHealth() + dmg);
+            hero.setHealth((hero.getHealth() + dmg));
         }
         // hero attacks enemy.
         dmg = enemy->getDefence() - hero.getAttack();
+        std::cout << "dmg to enemy is: " << dmg<< std::endl; 
         if ( dmg < (DEF) 0) {
-            enemy->setHealth(enemy->getHealth() + dmg);
+            enemy->setHealth((enemy->getHealth() + dmg));
         }
-        std::cout <<"#"<< ++i <<" "<< hero.getName()<< " Health: " << hero.getHealth() <<" "<< enemy->getName() << " Health: "<< enemy->getHealth()<< std::endl; 
-    }while( hero.getHealth() < 1 || enemy->getHealth() < 1 );
+        std::cout << ++i <<" "<< hero.getName()<< " Health: " << hero.getHealth() <<" "<< enemy->getName() << " Health: "<< enemy->getHealth()<< std::endl; 
+    }while( !(hero.getHealth() < (HP)1) && !(enemy->getHealth() < (HP)1) );
 
     
     if (hero.getHealth()<1) {
@@ -300,8 +299,8 @@ void action::combat(Arena<DEF> arena, std::unique_ptr<Opponent> enemy, Hero hero
 
 
 
-void action::combat(Arena<ATT> arena, std::unique_ptr<Opponent> enemy , Hero hero){
-   DEF dmg; 
+void action::combat(Arena<ATT> arena, std::unique_ptr<Opponent> enemy , Hero& hero){
+    DEF dmg; 
     int i = 0;
     std::cout << "You encountered a" << enemy->getName() << "!\n\r";
     hero.show();
@@ -309,16 +308,18 @@ void action::combat(Arena<ATT> arena, std::unique_ptr<Opponent> enemy , Hero her
     do{
         // enemy attacks hero. 
         dmg =  hero.getDefence() - enemy->getAttack();
+        std::cout << "dmg to hero is: " << dmg<< std::endl; 
         if ( dmg < (DEF) 0) {
-            hero.setHealth(hero.getHealth() + dmg);
+            hero.setHealth((hero.getHealth() + dmg));
         }
         // hero attacks enemy.
         dmg = enemy->getDefence() - (hero.getAttack() + arena.getCombatModifier());
+        std::cout << "dmg to enemy is: " << dmg<< std::endl;    
         if ( dmg < (DEF) 0) {
-            enemy->setHealth(enemy->getHealth() + dmg);
+            enemy->setHealth((enemy->getHealth() + dmg));
         }
         std::cout << ++i << hero.getName()<< " Health: " << hero.getHealth() <<" "<< enemy->getName() << " Health: "<< enemy->getHealth()<< std::endl; 
-    }while( hero.getHealth() < 1 || enemy->getHealth() < 1 );
+    }while( !(hero.getHealth() < (HP)1) && !(enemy->getHealth() < (HP)1)  );
 
     if (hero.getHealth()<1) {
         std::cout<< "The "<< enemy->getName()<< " killed you\n !!! GAME OVER !!!\n\n" ;
