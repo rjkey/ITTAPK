@@ -14,9 +14,11 @@ int main()
     srand (time(NULL));
 
     std::cout << "Welcome to Path of Destiny\nName your hero: ";
-    Hero hero( name, (HP)200, (ATT)15, (DEF)15);
-    PathOfDestiny game = PathOfDestiny();
-    std::cout << "Game start: \n"; 
+    std::cin>> name;
+    Hero hero( name, (HP)200, (ATT)20, (DEF)20);
+    hero.showStats();
+    PathOfDestiny game = PathOfDestiny(hero);
+    std::cout << "\nSo the journey begins \n"; 
 
 
     for(size_t i = 0; i < 3; i++)
