@@ -3,8 +3,8 @@
 #define MAX_HP 100
 #define MAX_ATT 20
 #define MAX_DEF 10
-#define MAX_GEAR_ATT 30
-#define MAX_GEAR_DEF 30
+#define MAX_GEAR_ATT 10
+#define MAX_GEAR_DEF 10
 #define NUMBER_OF_OPPONENT_TYPES 4
 
 #include "CosTypes.hpp"
