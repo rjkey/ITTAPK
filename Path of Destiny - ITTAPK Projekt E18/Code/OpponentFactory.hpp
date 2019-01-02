@@ -33,9 +33,21 @@ std::unique_ptr<Opponent> OpponentFactory::getOpponent()
 	switch (i)
 	{
 	case 0:
-		return std::make_unique<Monster>();
+		try{
+			return std::make_unique<Monster>();
+		}
+		catch(std::bad_alloc& ba){
+			std::cerr << "Bad allocation caught in OpponentFactory. " << ba.what() << '\n'; 
+		}		
+		
 	case 1:
-		return std::make_unique<Humanoid>();
+		try{
+			return std::make_unique<Humanoid>();
+		}
+		catch(std::bad_alloc& ba){
+			std::cerr << "Bad allocation caught in OpponentFactory. " << ba.what() << '\n'; 
+		}
+
 	default:
 		return nullptr;
 	}
