@@ -1,8 +1,8 @@
 #ifndef OPPONENT_H
 #define OPPONENT_H
 #define MAX_HP 100
-#define MAX_ATT 30
-#define MAX_DEF 30
+#define MAX_ATT 20
+#define MAX_DEF 10
 #define MAX_GEAR_ATT 30
 #define MAX_GEAR_DEF 30
 #define NUMBER_OF_OPPONENT_TYPES 4
