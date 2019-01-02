@@ -5,7 +5,8 @@
 #include "Location.hpp"
 #include "Opponent.hpp"
 #include <memory>
-
+#include <future> 
+#include <thread>
 
 
 
@@ -25,17 +26,18 @@ void action::combat(Arena<DEF> arena, std::unique_ptr<Opponent> enemy, Hero& her
     enemy->show();
 
     do{
-        // enemy attacks hero. 
-        dmg =  hero.getDefence() + arena.getCombatModifier() - enemy->getAttack();
-        std::cout << "dmg to hero is: " << dmg<< std::endl; 
-        if ( dmg < (DEF) 0) {
-            hero.setHealth((hero.getHealth() + dmg));
-        }
+        // enemy attacks hero. future from an async()
+        std::future<DEF> f2 = std::async(std::launch::async, [&hero, &arena, &enemy]{ return hero.getDefence() + arena.getCombatModifier() - enemy->getAttack(); });
+       
         // hero attacks enemy.
         dmg = enemy->getDefence() - hero.getAttack();
-        std::cout << "dmg to enemy is: " << dmg<< std::endl; 
+        //std::cout << "dmg to enemy is: " << dmg<< std::endl; 
         if ( dmg < (DEF) 0) {
             enemy->setHealth((enemy->getHealth() + dmg));
+        }
+        f2.wait(); // If not done waiting to get done
+        if ( f2.get() < (DEF) 0) {
+            hero.setHealth((hero.getHealth() + f2.get()));
         }
         std::cout << ++i <<" "<< hero.getName()<< " Health: " << hero.getHealth() <<" "<< enemy->getName() << " Health: "<< enemy->getHealth()<< std::endl; 
     }while( !(hero.getHealth() < (HP)1) && !(enemy->getHealth() < (HP)1) );

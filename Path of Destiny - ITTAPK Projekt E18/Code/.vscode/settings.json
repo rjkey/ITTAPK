@@ -35,6 +35,7 @@
         "optional": "cpp",
         "string_view": "cpp",
         "variant": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "future": "cpp"
     }
 }
