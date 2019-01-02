@@ -83,7 +83,7 @@ void PathOfDestiny::gameLogic()
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, Arena<DEF>>){
             std::cout << arg << '\n';
-            combatDEF(arg,enemyFactory.getOpponent());
+            combatDEF(arg,std::move(enemyFactory.getOpponent()));
             return true;
         }
         else if constexpr (std::is_same_v<T, Arena<ATT>>){
@@ -228,7 +228,7 @@ void PathOfDestiny::movement()
 
         // 0 or 1 for Arena else Path
         if((rand() % 3)<2) {
-            int value = rand() % 21 -10; // combatModifier between -10,10 
+            int value = rand() % 11 -5; // combatModifier between -10,10 
             // If negative it a DEF modifier
             if (value<1) {
                 DEF combatMod = value;
