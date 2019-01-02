@@ -15,7 +15,7 @@ int main()
 
     std::cout << "Welcome to Path of Destiny\nName your hero: ";
     std::cin>> name;
-    Hero hero( name, (HP)200, (ATT)20, (DEF)20);
+    Hero hero( name, (HP)200, (ATT)15, (DEF)15);
     hero.showStats();
     PathOfDestiny game = PathOfDestiny(hero);
     std::cout << "\nSo the journey begins \n"; 
