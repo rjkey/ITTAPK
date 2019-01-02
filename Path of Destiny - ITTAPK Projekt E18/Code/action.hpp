@@ -27,19 +27,29 @@ void action::combat(Arena<DEF> arena, std::unique_ptr<Opponent> enemy, Hero& her
 
     do{
         // enemy attacks hero. future from an async()
-        std::future<DEF> f2 = std::async(std::launch::async, [&hero, &arena, &enemy]{ return hero.getDefence() + arena.getCombatModifier() - enemy->getAttack(); });
-       
-        // hero attacks enemy.
-        dmg = enemy->getDefence() - hero.getAttack();
-        //std::cout << "dmg to enemy is: " << dmg<< std::endl; 
-        if ( dmg < (DEF) 0) {
-            enemy->setHealth((enemy->getHealth() + dmg));
+        
+        try
+        {
+            std::future<DEF> f2 = std::async(std::launch::async, [&hero, &arena, &enemy]{ return hero.getDefence() + arena.getCombatModifier() - enemy->getAttack(); });
+            // hero attacks enemy.
+            dmg = enemy->getDefence() - hero.getAttack();
+            //std::cout << "dmg to enemy is: " << dmg<< std::endl; 
+            if ( dmg < (DEF) 0) {
+                enemy->setHealth((enemy->getHealth() + dmg));
+            }
+            f2.wait(); // If not done waiting to get done
+            dmg = f2.get();
+            if ( dmg < (DEF) 0) {
+                hero.setHealth((hero.getHealth() + dmg));
+            }
         }
-        f2.wait(); // If not done waiting to get done
-        if ( f2.get() < (DEF) 0) {
-            hero.setHealth((hero.getHealth() + f2.get()));
+        catch(const std::future_error& e)
+        {
+            std::cerr << "DEF combat futuremaking \n"<< e.what() << '\n';
         }
-        std::cout << ++i <<" "<< hero.getName()<< " Health: " << hero.getHealth() <<" "<< enemy->getName() << " Health: "<< enemy->getHealth()<< std::endl; 
+         
+        
+        std::cout << ++i <<": "<< hero.getName()<< " Health: " << hero.getHealth() <<"\t"<< enemy->getName() << " Health: "<< enemy->getHealth()<< std::endl; 
     }while( !(hero.getHealth() < (HP)1) && !(enemy->getHealth() < (HP)1) );
 
     
@@ -78,17 +88,15 @@ void action::combat(Arena<ATT> arena, std::unique_ptr<Opponent> enemy , Hero& he
     do{
         // enemy attacks hero. 
         dmg =  hero.getDefence() - enemy->getAttack();
-        std::cout << "dmg to hero is: " << dmg<< std::endl; 
         if ( dmg < (DEF) 0) {
             hero.setHealth((hero.getHealth() + dmg));
         }
         // hero attacks enemy.
-        dmg = enemy->getDefence() - (hero.getAttack() + arena.getCombatModifier());
-        std::cout << "dmg to enemy is: " << dmg<< std::endl;    
+        dmg = enemy->getDefence() - (hero.getAttack() + arena.getCombatModifier());  
         if ( dmg < (DEF) 0) {
             enemy->setHealth((enemy->getHealth() + dmg));
         }
-        std::cout << ++i << hero.getName()<< " Health: " << hero.getHealth() <<" "<< enemy->getName() << " Health: "<< enemy->getHealth()<< std::endl; 
+        std::cout << ": " << ++i << hero.getName()<< " Health: " << hero.getHealth() <<"\t"<< enemy->getName() << " Health: "<< enemy->getHealth()<< std::endl; 
     }while( !(hero.getHealth() < (HP)1) && !(enemy->getHealth() < (HP)1)  );
 
     if (hero.getHealth()<1) {
@@ -102,14 +110,14 @@ void action::combat(Arena<ATT> arena, std::unique_ptr<Opponent> enemy , Hero& he
     if (value<1) {
         DEF v = abs(value);
         Gear<DEF> newGear = Gear(v);
-        std::cout << "You found a " << newGear << " and puts it into your inventory";
+        std::cout << "You found a " << newGear << " and puts it into your inventory\n";
         hero.addGearToInventory(newGear);
     }
     else // If positive a weapon
     {
         ATT v = value;
         Gear<ATT> newGear = Gear(v);
-        std::cout << "You found a " << newGear << " and puts it into your inventory";
+        std::cout << "You found a " << newGear << " and puts it into your inventory\n";
         hero.addGearToInventory(newGear);
     }         
 }
