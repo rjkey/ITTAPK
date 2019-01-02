@@ -45,7 +45,7 @@ void action::combat(Arena<DEF> arena, std::unique_ptr<Opponent> enemy, Hero& her
         }
         catch(const std::future_error& e)
         {
-            std::cerr << "DEF combat futuremaking \n"<< e.what() << '\n';
+            std::cerr << "DEF combat future making \n"<< e.what() << '\n';
         }
          
         
