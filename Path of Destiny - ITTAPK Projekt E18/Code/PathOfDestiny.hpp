@@ -12,7 +12,7 @@
 
 // the variant to visit
 using var_t = std::variant<Arena<DEF>,Arena<ATT>,Path>;
-// helper type for the visitor #3
+// helper type for the visitor
 template<class T> struct always_false : std::false_type {};
 
 
@@ -70,12 +70,14 @@ void PathOfDestiny::gameLogic()
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, Arena<DEF>>){
             std::cout << arg << '\n';
-            action::combat(arg,std::move(enemyFactory.getOpponent()),hero);//combatDEF(arg,std::move(enemyFactory.getOpponent()));// 
+			//combatDEF(arg,std::move(enemyFactory.getOpponent()));// 
+            action::combat(arg,std::move(enemyFactory.getOpponent()),hero);
             return true;
         }
         else if constexpr (std::is_same_v<T, Arena<ATT>>){
             std::cout << arg << '\n';
-            action::combat(arg,std::move(enemyFactory.getOpponent()),hero);//combatATT(arg,enemyFactory.getOpponent());
+			//combatATT(arg,enemyFactory.getOpponent());
+            action::combat(arg,std::move(enemyFactory.getOpponent()),hero);
             return true;
         }
         else if constexpr (std::is_same_v<T, Path>){
@@ -116,7 +118,7 @@ void PathOfDestiny::movement()
         }       
     }
     
-    // 3. type-matching visitor: to return posible ways.
+    // type-matching visitor: to return posible ways.
     ways = std::visit([](auto&& arg) -> int {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, Path>){
@@ -125,7 +127,7 @@ void PathOfDestiny::movement()
         }
         else 
         {
-            // must be assert since input is decided runtime, if not Path = plz fail!
+            //Assert if not Path 
             assert(true);
             std::cout << "ERROR PathOfDestiny::movement - Not Path in currentlocation!\n";
             return 0;
