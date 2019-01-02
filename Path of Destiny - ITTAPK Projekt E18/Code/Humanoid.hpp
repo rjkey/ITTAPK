@@ -94,8 +94,8 @@ void Humanoid::show()
 std::ostream& operator<<(std::ostream& os, const Humanoid &H_Obj)
 {
 
-    return os <<"Enemy: "<< H_Obj.name_ << "\nHealth: " << H_Obj.health_ << "\t Attack: " << H_Obj.attack_ << "\tDefence: " << H_Obj.defence_ 
-    <<"\nWeapon: "<< H_Obj.weapon_<< "Armour: " << H_Obj.armour_<<"\n";
+    return os <<"Enemy: "<< H_Obj.name_ << "\nHealth: " << H_Obj.health_ << "\t Attack: " << (H_Obj.attack_+ H_Obj.weapon_.getValue()) 
+    << "\tDefence: " << (H_Obj.defence_ + H_Obj.armour_.getValue()) <<"\nWeapon: "<< H_Obj.weapon_ << "\n" << "Armour: " << H_Obj.armour_<<"\n";
 }
 
 #endif // HUMANOID_H
