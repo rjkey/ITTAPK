@@ -21,9 +21,8 @@ int main()
     std::cout << "\nSo the journey begins \n"; 
 
 
-    for(size_t i = 0; i < 3; i++)
+    while(1)//for(size_t i = 0; i < 3; i++)
     {
-        //game.movement();
         game.gameLogic();
     }
     //*/
