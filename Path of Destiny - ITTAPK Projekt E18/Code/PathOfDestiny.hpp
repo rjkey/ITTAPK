@@ -16,15 +16,9 @@ using var_t = std::variant<Arena<DEF>,Arena<ATT>,Path>;
 template<class T> struct always_false : std::false_type {};
 
 
-
-
-
-
-
 class PathOfDestiny
 {
 private:
-    /* data */
     LocationFactory locationFactory_;
     OpponentFactory opponentFactory_;
     std::variant<Arena<DEF>,Arena<ATT>,Path> currentLocation_;
@@ -37,11 +31,9 @@ public:
 
     ~PathOfDestiny();
     void gameLogic();
-    void movement();
-    
-    
-    
+    void movement();    
 };
+
 PathOfDestiny::PathOfDestiny()
 {
     locationFactory_ = LocationFactory();
@@ -65,30 +57,29 @@ PathOfDestiny::~PathOfDestiny()
 
 void PathOfDestiny::gameLogic()
 {   
+    //For some reation the binds copies the hero into combat instead og a reference
     auto combatDEF = std::bind(static_cast<void(*)(Arena<DEF>, std::unique_ptr<Opponent>, Hero&)>(action::combat),std::placeholders::_1, std::placeholders::_2, hero_);
-    // kan gribes med [&] [this] 
+    // can catch [&] [this] 
     auto combatATT = [&hero = this->hero_](Arena<ATT> arena, std::unique_ptr<Opponent> enemy){action::combat(arena, std::move(enemy), hero);};
     bool combatDone = false;
  
-    // combine 2. and 3. for return value, from variant. 
-    // 2. value-returning visitor, demonstrates the idiom of returning another variant
-    //var_t w = std::visit([](auto&& arg) -> var_t {return arg;}, currentLocation_);
-
-    // 3. type-matching visitor: a lambda that handles each type differently
+    
+    // 3. type-matching visitor: a lambda that handles each type differently with a return boolean
     //std::cout << "Visiting currentLocation \n";
-    combatDone = std::visit([&combatDEF, &combatATT, &enemyFactory = this->opponentFactory_](auto&& arg) -> bool {
+    combatDone = std::visit([&combatDEF, &combatATT, &enemyFactory = this->opponentFactory_, &hero = this->hero_](auto&& arg) -> bool {
         using T = std::decay_t<decltype(arg)>;
         if constexpr (std::is_same_v<T, Arena<DEF>>){
             std::cout << arg << '\n';
-            combatDEF(arg,std::move(enemyFactory.getOpponent()));
+            action::combat(arg,std::move(enemyFactory.getOpponent()),hero);//combatDEF(arg,std::move(enemyFactory.getOpponent()));// 
             return true;
         }
         else if constexpr (std::is_same_v<T, Arena<ATT>>){
             std::cout << arg << '\n';
-            combatATT(arg,enemyFactory.getOpponent());
+            action::combat(arg,std::move(enemyFactory.getOpponent()),hero);//combatATT(arg,enemyFactory.getOpponent());
             return true;
         }
         else if constexpr (std::is_same_v<T, Path>){
+            //Do nothing Path is presented later.
             //std::cout << arg << '\n';
             return false;
         }
@@ -109,8 +100,6 @@ void PathOfDestiny::gameLogic()
 
 void PathOfDestiny::movement()
 {
-
-    // Chris Debugging   
     char input; 
     int ways;
     bool validInput = false;
@@ -127,9 +116,6 @@ void PathOfDestiny::movement()
         }       
     }
     
-    // 2. value-returning visitor, demonstrates the idiom of returning another variant
-    //var_t w = std::visit([](auto&& arg) -> var_t {return arg;}, currentLocation_);
-
     // 3. type-matching visitor: to return posible ways.
     ways = std::visit([](auto&& arg) -> int {
         using T = std::decay_t<decltype(arg)>;
@@ -221,11 +207,9 @@ void PathOfDestiny::movement()
         }   
     }while(!validInput);
     //*/ 
-
-
         // 0 or 1 for Arena else Path
         if((rand() % 3)<2) {
-            int value = rand() % 11 -5; // combatModifier between -10,10 
+            int value = rand() % 11 -5; // combatModifier between -5,5 
             // If negative it a DEF modifier
             if (value<1) {
                 DEF combatMod = value;
