@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>5</zoom_level>
+  <zoom_level>8</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1120</x>
-      <y>265</y>
-      <w>145</w>
-      <h>50</h>
+      <x>1136</x>
+      <y>288</y>
+      <w>232</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 OpponentFactory
@@ -21,10 +21,10 @@ OpponentFactory
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1135</x>
-      <y>350</y>
-      <w>115</w>
-      <h>145</h>
+      <x>1160</x>
+      <y>432</y>
+      <w>184</w>
+      <h>232</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 Opponent
@@ -50,41 +50,16 @@ Opponent
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>960</x>
-      <y>575</y>
-      <w>210</w>
-      <h>115</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;class&gt;&gt;
-Monster
---
-+ Monster()
-+ ~Monster
-+ getName(): std::string
-+ getHealth(): HP
-+ getAttack(): ATT
-+ getDefence(): DEF
-+ getWeapon(): Gear&lt;ATT&gt;
-+ getArmour(): Gear&lt;DEF&gt;
-+ setHealth(HP): void
-+ showStats(): void
---
-&lt;&lt;friend&gt;&gt; operator&lt;&lt;(std::ostream&amp;, const Monster&amp;): std::ostream&amp;</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1205</x>
-      <y>575</y>
-      <w>215</w>
-      <h>115</h>
+      <x>888</x>
+      <y>784</y>
+      <w>336</w>
+      <h>184</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 Humanoid
 --
-+ Humanoid()
-+ ~Humanoid()
++ Monster()
++ ~Monster
 + getName(): std::string
 + getHealth(): HP
 + getAttack(): ATT
@@ -98,47 +73,61 @@ Humanoid
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <id>UMLClass</id>
     <coordinates>
-      <x>1060</x>
-      <y>490</y>
-      <w>140</w>
-      <h>95</h>
+      <x>1280</x>
+      <y>784</y>
+      <w>344</w>
+      <h>184</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>260.0;10.0;260.0;100.0;10.0;100.0;10.0;170.0</additional_attributes>
+    <panel_attributes>&lt;&lt;class&gt;&gt;
+Monster
+--
++ Humanoid()
++ ~Humanoid()
++ getName(): std::string
++ getHealth(): HP
++ getAttack(): ATT
++ getDefence(): DEF
++ getWeapon(): Gear&lt;ATT&gt;
++ getArmour(): Gear&lt;DEF&gt;
++ setHealth(HP): void
++ showStats(): void
+--
+&lt;&lt;friend&gt;&gt; operator&lt;&lt;(std::ostream&amp;, const Monster&amp;): std::ostream&amp;</panel_attributes>
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1185</x>
-      <y>490</y>
-      <w>135</w>
-      <h>95</h>
+      <x>1240</x>
+      <y>656</y>
+      <w>224</w>
+      <h>144</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;100.0;250.0;100.0;250.0;170.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0;260.0;90.0;260.0;160.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1185</x>
-      <y>310</y>
-      <w>15</w>
-      <h>50</h>
+      <x>1240</x>
+      <y>360</y>
+      <w>24</w>
+      <h>88</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>325</x>
-      <y>675</y>
-      <w>110</w>
-      <h>135</h>
+      <x>264</x>
+      <y>744</y>
+      <w>192</w>
+      <h>216</h>
     </coordinates>
-    <panel_attributes>typename: T
+    <panel_attributes>template=typename: T
 &lt;&lt;class&gt;&gt;
 Gear
 --
@@ -159,10 +148,10 @@ Gear
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>540</x>
-      <y>370</y>
-      <w>200</w>
-      <h>120</h>
+      <x>376</x>
+      <y>456</y>
+      <w>320</w>
+      <h>192</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 Path
@@ -185,10 +174,10 @@ Path
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>780</x>
-      <y>370</y>
-      <w>205</w>
-      <h>105</h>
+      <x>760</x>
+      <y>456</y>
+      <w>328</w>
+      <h>168</h>
     </coordinates>
     <panel_attributes>typename: T
 &lt;&lt;class&gt;&gt;
@@ -209,10 +198,10 @@ Arena
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>725</x>
-      <y>265</y>
-      <w>70</w>
-      <h>50</h>
+      <x>680</x>
+      <y>288</y>
+      <w>112</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 LocationFactory
@@ -225,14 +214,12 @@ LocationFactory
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>500</x>
-      <y>685</y>
-      <w>95</w>
-      <h>105</h>
+      <x>1040</x>
+      <y>0</y>
+      <w>352</w>
+      <h>120</h>
     </coordinates>
-    <panel_attributes>typename: T
-typename: Tag
-typename: Operations
+    <panel_attributes>template=typename: T, Tag, Operations
 &lt;&lt;class&gt;&gt;
 CosTypes
 --
@@ -248,10 +235,10 @@ CosTypes
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>245</x>
-      <y>255</y>
-      <w>205</w>
-      <h>230</h>
+      <x>0</x>
+      <y>272</y>
+      <w>328</w>
+      <h>368</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 Hero
@@ -291,10 +278,10 @@ Hero
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>660</x>
-      <y>90</y>
-      <w>210</w>
-      <h>110</h>
+      <x>568</x>
+      <y>8</y>
+      <w>336</w>
+      <h>176</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 PathOfDestiny
@@ -311,5 +298,93 @@ PathOfDestiny
 + gameLogic(): void
 + movement(): void</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>152</x>
+      <y>232</y>
+      <w>600</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0;730.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>728</x>
+      <y>176</y>
+      <w>24</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;140.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>728</x>
+      <y>232</y>
+      <w>544</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>660.0;70.0;660.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>728</x>
+      <y>400</y>
+      <w>216</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>250.0;70.0;250.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>528</x>
+      <y>360</y>
+      <w>224</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;60.0;260.0;60.0;260.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>144</x>
+      <y>632</y>
+      <w>224</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0;260.0;80.0;260.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>344</x>
+      <y>688</y>
+      <w>560</w>
+      <h>208</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;440.0;10.0;440.0;240.0;680.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1048</x>
+      <y>720</y>
+      <w>216</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0;250.0;10.0</additional_attributes>
   </element>
 </diagram>
