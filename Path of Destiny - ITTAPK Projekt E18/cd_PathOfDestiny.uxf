@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>8</zoom_level>
+  <zoom_level>9</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1136</x>
-      <y>288</y>
-      <w>232</w>
-      <h>80</h>
+      <x>1296</x>
+      <y>360</y>
+      <w>261</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 OpponentFactory
@@ -21,10 +21,10 @@ OpponentFactory
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1160</x>
-      <y>432</y>
-      <w>184</w>
-      <h>232</h>
+      <x>1323</x>
+      <y>522</y>
+      <w>207</w>
+      <h>261</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 Opponent
@@ -50,16 +50,16 @@ Opponent
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>888</x>
-      <y>784</y>
-      <w>336</w>
-      <h>184</h>
+      <x>1017</x>
+      <y>918</y>
+      <w>378</w>
+      <h>207</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 Humanoid
 --
-+ Monster()
-+ ~Monster
++ Humanoid()
++ ~Humanoid
 + getName(): std::string
 + getHealth(): HP
 + getAttack(): ATT
@@ -75,16 +75,16 @@ Humanoid
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1280</x>
-      <y>784</y>
-      <w>344</w>
-      <h>184</h>
+      <x>1458</x>
+      <y>918</y>
+      <w>387</w>
+      <h>207</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 Monster
 --
-+ Humanoid()
-+ ~Humanoid()
++ Monster()
++ ~Monster()
 + getName(): std::string
 + getHealth(): HP
 + getAttack(): ATT
@@ -100,10 +100,10 @@ Monster
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1240</x>
-      <y>656</y>
-      <w>224</w>
-      <h>144</h>
+      <x>1413</x>
+      <y>774</y>
+      <w>252</w>
+      <h>162</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;90.0;260.0;90.0;260.0;160.0</additional_attributes>
@@ -111,10 +111,10 @@ Monster
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1240</x>
-      <y>360</y>
-      <w>24</w>
-      <h>88</h>
+      <x>1413</x>
+      <y>441</y>
+      <w>27</w>
+      <h>99</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
@@ -122,10 +122,10 @@ Monster
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>264</x>
-      <y>744</y>
-      <w>192</w>
-      <h>216</h>
+      <x>315</x>
+      <y>873</y>
+      <w>414</w>
+      <h>261</h>
     </coordinates>
     <panel_attributes>template=typename: T
 &lt;&lt;class&gt;&gt;
@@ -142,16 +142,20 @@ Gear
 + Gear(Gear&amp;&amp;)
 + getValue(): T
 + printGear(): void
---</panel_attributes>
+--
+&lt;&lt;friend&gt;&gt; operator&lt;&lt;(std::ostream&amp;, const Gear&amp;): std::ostream&amp;
+&lt;&lt;friend&gt;&gt; operator==(Gear, Gear): bool
+&lt;&lt;friend&gt;&gt; operator!=(Gear, Gear): bool
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>376</x>
-      <y>456</y>
-      <w>320</w>
-      <h>192</h>
+      <x>441</x>
+      <y>549</y>
+      <w>360</w>
+      <h>216</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 Path
@@ -174,12 +178,12 @@ Path
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>760</x>
-      <y>456</y>
-      <w>328</w>
-      <h>168</h>
+      <x>873</x>
+      <y>540</y>
+      <w>414</w>
+      <h>198</h>
     </coordinates>
-    <panel_attributes>typename: T
+    <panel_attributes>template=typename: T
 &lt;&lt;class&gt;&gt;
 Arena
 --
@@ -198,10 +202,10 @@ Arena
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>680</x>
-      <y>288</y>
-      <w>112</w>
-      <h>80</h>
+      <x>783</x>
+      <y>360</y>
+      <w>126</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 LocationFactory
@@ -214,10 +218,10 @@ LocationFactory
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1040</x>
-      <y>0</y>
-      <w>352</w>
-      <h>120</h>
+      <x>1107</x>
+      <y>36</y>
+      <w>396</w>
+      <h>216</h>
     </coordinates>
     <panel_attributes>template=typename: T, Tag, Operations
 &lt;&lt;class&gt;&gt;
@@ -227,6 +231,11 @@ CosTypes
 --
 + SafeType()
 + SafeType(T)
++ SafeType(const SafeType&amp;)
++ SafeType(SafeType&amp;&amp;)
++ SafeType&amp; operator=(const SafeType&amp;)
++ SafeType&amp; operator=(SafeType&amp;&amp;)
++ virtual ~SafeType()
 + get(): T
 + set(T&amp;&amp;): void
 </panel_attributes>
@@ -235,10 +244,10 @@ CosTypes
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>272</y>
-      <w>328</w>
-      <h>368</h>
+      <x>18</x>
+      <y>342</y>
+      <w>369</w>
+      <h>414</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 Hero
@@ -278,10 +287,10 @@ Hero
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>568</x>
-      <y>8</y>
-      <w>336</w>
-      <h>176</h>
+      <x>657</x>
+      <y>45</y>
+      <w>378</w>
+      <h>198</h>
     </coordinates>
     <panel_attributes>&lt;&lt;class&gt;&gt;
 PathOfDestiny
@@ -302,10 +311,10 @@ PathOfDestiny
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>152</x>
-      <y>232</y>
-      <w>600</w>
-      <h>56</h>
+      <x>189</x>
+      <y>297</y>
+      <w>675</w>
+      <h>63</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>10.0;50.0;10.0;10.0;730.0;10.0</additional_attributes>
@@ -313,10 +322,10 @@ PathOfDestiny
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>728</x>
-      <y>176</y>
-      <w>24</w>
-      <h>128</h>
+      <x>837</x>
+      <y>234</y>
+      <w>27</w>
+      <h>144</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;</panel_attributes>
     <additional_attributes>10.0;140.0;10.0;10.0</additional_attributes>
@@ -324,10 +333,10 @@ PathOfDestiny
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>728</x>
-      <y>232</y>
-      <w>544</w>
-      <h>72</h>
+      <x>837</x>
+      <y>297</y>
+      <w>612</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>660.0;70.0;660.0;10.0;10.0;10.0</additional_attributes>
@@ -335,10 +344,10 @@ PathOfDestiny
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>728</x>
-      <y>400</y>
-      <w>216</w>
-      <h>72</h>
+      <x>837</x>
+      <y>486</y>
+      <w>243</w>
+      <h>81</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>250.0;70.0;250.0;10.0;10.0;10.0</additional_attributes>
@@ -346,10 +355,10 @@ PathOfDestiny
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>528</x>
-      <y>360</y>
-      <w>224</w>
-      <h>112</h>
+      <x>612</x>
+      <y>441</y>
+      <w>252</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;120.0;10.0;60.0;260.0;60.0;260.0;10.0</additional_attributes>
@@ -357,21 +366,21 @@ PathOfDestiny
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>144</x>
-      <y>632</y>
-      <w>224</w>
-      <h>128</h>
+      <x>180</x>
+      <y>747</y>
+      <w>342</w>
+      <h>153</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;80.0;260.0;80.0;260.0;140.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0;360.0;80.0;360.0;150.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>344</x>
-      <y>688</y>
-      <w>560</w>
-      <h>208</h>
+      <x>405</x>
+      <y>810</y>
+      <w>630</w>
+      <h>234</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;</panel_attributes>
     <additional_attributes>10.0;10.0;440.0;10.0;440.0;240.0;680.0;240.0</additional_attributes>
@@ -379,12 +388,39 @@ PathOfDestiny
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1048</x>
-      <y>720</y>
-      <w>216</w>
-      <h>80</h>
+      <x>1197</x>
+      <y>846</y>
+      <w>243</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>10.0;80.0;10.0;10.0;250.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>0</x>
+      <y>0</y>
+      <w>1863</w>
+      <h>1152</h>
+    </coordinates>
+    <panel_attributes>cd Path of Destiny</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1458</x>
+      <y>72</y>
+      <w>378</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;namespace&gt;&gt;
+Action
+--
++ combat(Arena&lt;DEF&gt;, std::unique_ptr&lt;Opponent&gt;, Hero&amp;): void
++ combat(Arena&lt;DEF&gt;, std::unique_ptr&lt;Opponent&gt;, Hero&amp;): void
+</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
