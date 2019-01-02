@@ -2,7 +2,6 @@
 #define COSTYPES_HPP
 
 #include <iostream>
-#include <utility>  // for exchange(); -see overloads
 
 
 
@@ -26,63 +25,49 @@
 
 
 /////////////////////////////////////////////
-// ***** x= Operator Definition ***** //
+// ***** x-Assignement Definition ***** //
 /////////////////////////////////////////////
 
 // takes a SafeType
 template<typename ST>
-struct Multiply 
-{
-  ST& operator *= (const ST& other)
-  {
+struct Multiply {
+  ST& operator *= (const ST& other) {
     // casts the input type (other) to whatever *this type is
     // and use the set() function to store the result of Mul-operation in it self.
     static_cast<ST&>(*this).set(static_cast<ST&>(*this).get() * other.get());    
     return static_cast<ST&>(*this);    
   }
-  
 };
 
 template<typename ST>
-struct Addition 
-{
-  ST& operator += (const ST& other)
-  {
+struct Addition {
+  ST& operator += (const ST& other) {
     static_cast<ST&>(*this).set(static_cast<ST&>(*this).get() + other.get());    
     return static_cast<ST&>(*this);
   }
-  
 };
 
 template<typename ST>
-struct Subtraction 
-{
-  ST& operator -= (const ST& other)
-  {
+struct Subtraction {
+  ST& operator -= (const ST& other) {
     static_cast<ST&>(*this).set(static_cast<ST&>(*this).get() - other.get());    
     return static_cast<ST&>(*this);
   }
-  
 };
 
 
 template<typename ST>
-struct OutStream 
-{
-  auto outstream() const
-  {
+struct OutStream {
+  auto outstream() const {
     return static_cast<const ST&>(*this).get();
   }
-  
 };
-
 
 
 /////////////////////////////////////////////
 // ***** SafeType Validation ***** //
 /////////////////////////////////////////////
 
-//
 // Struct for comparing validation (false)
 template <class T, class = void>
 struct HasValidateMethod : std::false_type {};
@@ -95,8 +80,7 @@ struct HasValidateMethod<T, std::void_t<decltype(std::declval<T>().validate)> > 
 template<typename ST>
 struct HP_Validation
 {
-  constexpr uint16_t validate(uint16_t value) const
-  {
+  constexpr uint16_t validate(uint16_t value) const {
     if(value > 0) {
       return value;
     }
@@ -111,11 +95,23 @@ template<typename ST, typename T>
 T&& validate(const ST& st, T&& t)
 {
   if constexpr(HasValidateMethod<ST>::value)
-                return st.validate(std::move(t));
+    return st.validate(std::move(t));
   else
     return std::move(t);
 }
 //*/
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -128,7 +124,6 @@ template<typename T, typename Tag, template<typename> typename... Operations>
 class SafeType : public Operations<SafeType<T, Tag, Operations...>>...
 {
 public:
-  using Type = T;   // why??
   // Default constructor (cant use setFunctions in Hero otherwise!)
   SafeType()
   { }
@@ -178,116 +173,17 @@ public:
     return false;
   }//*/
 
-
-
-
-
-  //////////////////// Overloads ////////////////////
-  /*/ Rule of 5: + Ostream
-  ~SafeType(){} // Destructor
-
-  SafeType(const SafeType& other) { // copy constructor
-    value_ = other.value_;
-  }
-
-  SafeType& operator=(const SafeType& other) { // copy assignment
-        return *this = SafeType(other);
-  }
-
-  //SafeType(SafeType&& other) noexcept // move constructor
-  //  : value_(std::exchange(other.value_, NULL))
-  //{}
-
-  SafeType(SafeType&& other) noexcept // move constructor
-    : value_(std::move(other.value_))
-  {}
-
-  SafeType& operator=(SafeType&& other) noexcept { // move assignment
-      //std::swap(value_, other.value_);
-      return *this;
-  }//*/
-
-  //
+  //////////////////// Rule of five ////////////////////
   SafeType(const SafeType&) = default;              // Copy constructor
   SafeType(SafeType&&) = default;                   // Move constructor
   SafeType& operator=(const SafeType&) = default;   // Copy assignment operator
   SafeType& operator=(SafeType&&) = default;        // Move assignment operator
-  virtual ~SafeType() { }                           // Destructor//*/
-
-  //////////////////// Overloads end ////////////////////
-  
+  virtual ~SafeType() { }                           // Destructor  
 
 
 private:
   T value_;
 };
-
-
-
-
-
-
-/////////////////////////////////////////////
-// ***** Operator Definition ***** //
-/////////////////////////////////////////////
-template<typename T, typename Tag, template<typename> typename... Operations>
-auto operator*(SafeType<T, Tag, Operations...> first, const SafeType<T, Tag, Operations...>& second)
-{
-    first *= second;
-  return std::move(first);
-}
-
-template<typename T, typename Tag, template<typename> typename... Operations>
-auto operator+(SafeType<T, Tag, Operations...> first, const SafeType<T, Tag, Operations...>& second)
-{  
-    first += second;
-  return std::move(first);
-}
-
-template<typename T, typename Tag, template<typename> typename... Operations>
-auto operator-(SafeType<T, Tag, Operations...> first, const SafeType<T, Tag, Operations...>& second)
-{
-    first -= second;
-  return std::move(first);
-}
-
-template<typename T, typename Tag, template<typename> typename... Operations>
-auto operator<(SafeType<T, Tag, Operations...> first, const SafeType<T, Tag, Operations...>& second)
-{
-    if( first.get() < second.get() ) {
-      return true;
-    }
-    return false;
-}
-
-template<typename T, typename Tag, template<typename> typename... Operations>
-auto operator>(SafeType<T, Tag, Operations...> first, const SafeType<T, Tag, Operations...>& second)
-{
-    if( first.get() > second.get() ) {
-      return true;
-    }
-    return false;
-}
-
-template<typename T, typename Tag, template<typename> typename... Operations>
-std::ostream& operator<<(std::ostream& os, const SafeType<T, Tag, Operations...>& first)
-{
-  os << first.outstream();
-  return os;
-}
-
-
-template<typename T, typename Tag, template<typename> typename... Operations>
-std::istream& operator>>(std::istream& is, SafeType<T, Tag, Operations...>& first)
-{
-  T t{};
-  
-  is >> t;
-  first.set(std::move(t));
-  return is;
-}
-
-
 
 
 
@@ -298,6 +194,72 @@ using HP = SafeType<int16_t, struct HP_tag,     Addition, Subtraction, OutStream
 using ATT = SafeType<int16_t, struct ATT_tag,  Addition, Subtraction, OutStream>;
 using DEF = SafeType<int16_t, struct DEF_tag,  Addition, Subtraction, OutStream>;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////
+// ***** Operator Arithmetics ***** //
+/////////////////////////////////////////////
+template<typename T, typename Tag, template<typename> typename... Operations>
+auto operator*(SafeType<T, Tag, Operations...> first, const SafeType<T, Tag, Operations...>& second) {
+  first *= second;
+  return std::move(first);
+}
+
+template<typename T, typename Tag, template<typename> typename... Operations>
+auto operator+(SafeType<T, Tag, Operations...> first, const SafeType<T, Tag, Operations...>& second) {  
+  first += second;
+  return std::move(first);
+}
+
+template<typename T, typename Tag, template<typename> typename... Operations>
+auto operator-(SafeType<T, Tag, Operations...> first, const SafeType<T, Tag, Operations...>& second) {
+  first -= second;
+  return std::move(first);
+}
+
+template<typename T, typename Tag, template<typename> typename... Operations>
+auto operator<(SafeType<T, Tag, Operations...> first, const SafeType<T, Tag, Operations...>& second) {
+    if( first.get() < second.get() ) {
+      return true;
+    }
+    return false;
+}
+
+template<typename T, typename Tag, template<typename> typename... Operations>
+auto operator>(SafeType<T, Tag, Operations...> first, const SafeType<T, Tag, Operations...>& second) {
+    if( first.get() > second.get() ) {
+      return true;
+    }
+    return false;
+}
+
+template<typename T, typename Tag, template<typename> typename... Operations>
+std::ostream& operator<<(std::ostream& os, const SafeType<T, Tag, Operations...>& first) {
+  os << first.outstream();
+  return os;
+}
+
+
+template<typename T, typename Tag, template<typename> typename... Operations>
+std::istream& operator>>(std::istream& is, SafeType<T, Tag, Operations...>& first) {
+  T t{};
+  is >> t;
+  first.set(std::move(t));
+  return is;
+}
 
 
 
@@ -330,7 +292,6 @@ auto operator+(DEF first, const HP& second)
   first.set(first.get() + second.get());;
   return std::move(first);
 }
-
 
 // Comparing HP and ATT (all combinations)
 auto operator<(HP first, const ATT& second)

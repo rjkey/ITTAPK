@@ -1,5 +1,6 @@
 ﻿#ifndef GEAR_H
 #define GEAR_H
+
 #define MAX 4
 #include <string>
 #include <array>
@@ -7,6 +8,8 @@
 
 static std::array<std::string, MAX> list_of_weapons = { "Axe", "Sword", "Mace", "Knife" };
 static std::array<std::string, MAX> list_of_armors = {"Shield", "Helmet", "Chestplate", "Chainmail"};
+
+
 
 template <typename T>
 class Gear
@@ -19,11 +22,17 @@ public:
 	explicit Gear (std::string name, T att_def);
 	~Gear();
 
+	// Functions
+	T getValue() const;
+	void printGear();
+
+
 	// Overloads
 	Gear(const Gear& other);
 	Gear(Gear&& other) noexcept;
 	Gear& operator=(const Gear& other);
 	Gear& operator=(Gear&& other) noexcept;
+	
 	friend std::ostream& operator<<(std::ostream& os, const Gear& G_Obj)
 	{
 		return os << G_Obj.name_ << " (" << G_Obj.weapon_amour_ << ")";
@@ -59,9 +68,7 @@ public:
 	}//*/
 
 
-	// Functions
-	T getValue() const;
-	void printGear();
+
 
 private:
 	T weapon_amour_;
